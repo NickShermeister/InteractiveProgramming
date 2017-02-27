@@ -8,7 +8,7 @@ class Card(object):
     Attributes: Suit, Value"""
 
     def __init__(self, suit, value):
-        self.suit = suit
+        self.suit = suit        #number, suit 
         self.value = value
 
     def __str__(self):
