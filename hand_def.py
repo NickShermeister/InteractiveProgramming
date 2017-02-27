@@ -18,9 +18,8 @@ class Hand(object):
 
     def remove_card(self, card):
         index = 0
-        for x in self.cards:
-            if str(x) == str(card):
+        for x in range(len(self.cards)-1):
+            if str(self.cards[x]) == str(card):
                 #cards[i].delete_self()     #Will delete_self when we have a gme in front of us.
-                cards.remove(index)
+                self.cards.remove(self.cards[x])
                 return
-            index += 1
