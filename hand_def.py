@@ -22,4 +22,5 @@ class Hand(object):
             if str(x) == str(card):
                 #cards[i].delete_self()     #Will delete_self when we have a gme in front of us.
                 cards.remove(index)
+                return
             index += 1
