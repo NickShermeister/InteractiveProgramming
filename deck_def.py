@@ -9,9 +9,8 @@ class Deck(object):
         cards_in_deck = []
         for s in card_attributes['suit']:
             for n in card_attributes['number']:
-                #temp_card = Card(s, n)
-                #cards_in_deck.append(temp_card)
-                cards_in_deck.append([s, n])
+                temp_card = Card(s, n)
+                cards_in_deck.append(temp_card)
         print(cards_in_deck)
 
     def draw(self):
