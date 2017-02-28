@@ -9,16 +9,17 @@ class Deck(object):
         self.deck_size = deck_size
         self.card_attributes = {'suit':[0,1,2,3], 'number':[6,7,8,9,10,11,12,13,14]}
         self.cards_in_deck = []
-        for s in card_attributes['suit']:
-            for n in card_attributes['number']:
+        for s in self.card_attributes['suit']:
+            for n in self.card_attributes['number']:
                 self.temp_card = Card(s, n)
                 self.cards_in_deck.append(self.temp_card)
-        self.shuffle_deck(cards_in_decks)
+        self.shuffle_deck(self.cards_in_deck)
 
-    def draw(self):
+    def draw(self, number_of_cards):
         '''Removes the top card of the deck
         '''
-        self.cards_in_deck = self.cards_in_deck[0, len(self.cards_in_deck)-1]
+        self.number_of_cards = number_of_cards
+        self.cards_in_deck = self.cards_in_deck[0:len(self.cards_in_deck)-self.number_of_cards]
 
     def shuffle_deck(self, cards_in_deck):
         '''Shuffles the deck
