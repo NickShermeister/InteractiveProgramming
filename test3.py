@@ -1,11 +1,31 @@
-import card_def
-import card_game
-import deck_def
-import hand_def
+
 import pygame
 
 BLACK = (0, 0, 0)
 BLUE = (0, 0, 255)
+WIDTHCARD = 40
+HEIGHTCARD = 60
+
+
+class Card(object):
+    def __init__(self, startx, starty, width = WIDTHCARD, height = HEIGHTCARD):
+        self.width = width
+        self.height = height
+        self.startx = startx
+        self.starty = starty
+        self.reset()
+
+    def reset(self):
+        self.x = self.startx
+        self.y = self.starty
+        self.dy = 0
+
+    def contains_pt(self, pt):
+        return (0 < pt[0] - self.x < self.width) and (0 < pt[1] - self.y < self.height)
+
+    def play(self):
+        self.y = 100
+
 
 class CardView(object):
     def __init__(self, model):
@@ -15,7 +35,8 @@ class CardView(object):
         model = self.model
         pygame.draw.rect(surface, BLUE, (int(model.x), int(model.y), model.width, model.height))
 
-class MoveController(object):
+
+class BounceController(object):
     def __init__(self, models):
         self.models = models
 
@@ -34,8 +55,8 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((640, 480))
 
-    card1 = card_def.Card(200, 320)
-    card2 = card_def.Card(300, 320)
+    card1 = Card(200, 320)
+    card2 = Card(300, 320)
     models = [card1, card2]
 
     views = []
@@ -45,8 +66,8 @@ def main():
 
     controllers = []
 
-    controllers.append(MoveController([card1]))
-    controllers.append(MoveController([card2]))
+    controllers.append(BounceController([card1]))
+    controllers.append(BounceController([card2]))
 
     running = True
     while running:

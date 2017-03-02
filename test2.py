@@ -17,16 +17,34 @@ clock = pygame.time.Clock()
 crashed = False
 carImg = pygame.image.load('racecar.png')
 
-def car(x,y):
-    gameDisplay.blit(carImg, (x,y))
+class CarTest(object):
+
+    def __init__(self, x,y):
+        self.x = x
+        self.y = y
+
+
+class CarView(object):
+    def __init__(self, model):
+        self.model = model
+
+    def draw(self, surface):
+        model = self.model
+        #gameDisplay.blit(carImg, (x,y))
+        pygame.draw.rect(surface, BLUE, (model.x, int(model.y)), model.radius)
 
 x =  (display_width * 0.45)
 y = (display_height * 0.8)
+
+def on_click(pos, car):
+    clicked_sprite = car.rect.collidepoint(pos)
 
 while not crashed:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             crashed = True
+        elif event.type == pygame.MOUSEBUTTONUP:
+            on_click(pygame.mouse.get_pos(), car(x,y))
 
     gameDisplay.fill(white)
     car(x,y)
