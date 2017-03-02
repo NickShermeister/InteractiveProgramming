@@ -1,8 +1,10 @@
 import random
+import card_def
+import pygame
 
 class Deck(object):
 
-    def __init__(self, deck_size):
+    def __init__(self, deck_size = 52, xloc = 400, yloc = 400, width = card_def.WIDTHCARD, height = card_def.HEIGHTCARD):
         '''deck_size is number of cards in deck (36)
         Initializes and creates the deck. Deck is a shuffled list of card objects with suit and value numbers.
         '''
@@ -11,15 +13,22 @@ class Deck(object):
         self.cards_in_deck = []
         for s in self.card_attributes['suit']:
             for n in self.card_attributes['number']:
-                self.temp_card = Card(s, n)
+                self.temp_card = card_def.Card(s, n)
                 self.cards_in_deck.append(self.temp_card)
         self.shuffle_deck(self.cards_in_deck)
+        self.x = xloc
+        self.y = yloc
+        self.width = width
+        self.height = height
 
     def draw(self, number_of_cards):
         '''Removes the top card of the deck
         '''
         self.number_of_cards = number_of_cards
         self.cards_in_deck = self.cards_in_deck[0:len(self.cards_in_deck)-self.number_of_cards]
+
+    def contains_pt(self, pt):
+        return (0 < pt[0] - self.x < self.width) and (0 < pt[1] - self.y < self.height)
 
     def shuffle_deck(self, cards_in_deck):
         '''Shuffles the deck
