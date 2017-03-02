@@ -31,21 +31,11 @@ class MoveController(object):
         if event.type == pygame.MOUSEBUTTONDOWN:
             for model in self.models:
                 if model.contains_pt(pygame.mouse.get_pos()):
-                    model.play(model.x, model.y - 100)
-                    break
-        if event.type == pygame.KEYDOWN:
-            for model in self.models:
-                model.reset()
-
-class DrawController(object):
-    def __init__(self, models):
-        self.models = models
-
-    def handle_event(self, event):
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            for model in self.models:
-                if model.contains_pt(pygame.mouse.get_pos()):
-                    model.play(300, 300)
+                    if model == deck:
+                        views.append(CardView(deck.cards_in_deck[len(deck.cards_in_deck)-1]))
+                        controllers.append(MoveController([deck.cards_in_deck[len(deck.cards_in_deck)-1]]))
+                        models.append(deck.cards_in_deck[len(deck.cards_in_deck)-1])
+                    model.play(model.x, model.y - 100, hand)
                     break
         if event.type == pygame.KEYDOWN:
             for model in self.models:
@@ -62,7 +52,7 @@ if __name__ == "__main__":
     screen = pygame.display.set_mode((game_constants.window_width, game_constants.window_height))
 
     views = [DeckView(deck)]
-    controllers = []
+    controllers = [MoveController([deck])]
     models = [deck]
 
     for c in hand.cards_in_hand:

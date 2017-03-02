@@ -19,7 +19,6 @@ class Hand(object):
             self.add_card(deck.cards_in_deck[-i])
         for c in self.cards_in_hand:
             c.x = (((game_constants.window_width * (5/8))/len(self.cards_in_hand)) * self.cards_in_hand.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
-            c.y = game_constants.window_height * (2/3)
 
     def add_card(self, card):
         self.cards_in_hand.append(card)

@@ -16,7 +16,7 @@ class Deck(object):
         self.cards_in_deck = []
         for s in self.card_attributes['suit']:
             for n in self.card_attributes['number']:
-                self.temp_card = card_def.Card(s, n)
+                self.temp_card = card_def.Card(s, n, -1, game_constants.window_height * (2/3))
                 self.cards_in_deck.append(self.temp_card)
         self.shuffle_deck(self.cards_in_deck)
         self.x = xloc
@@ -37,3 +37,7 @@ class Deck(object):
         '''Shuffles the deck
         '''
         return(random.shuffle(self.cards_in_deck))
+
+    def play(self, x, y, hand):
+        hand.draw(1, self)
+        self.draw(1)
