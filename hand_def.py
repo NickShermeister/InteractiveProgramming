@@ -1,19 +1,25 @@
-import random
-import pygame
-import math
+import card_def
+import card_game
+import deck_def
+import game_constants
 
 class Hand(object):
     """Defines both player hand and AI hand
 
     Attributes: cards"""
 
-    def __init__(self, cards_in_hand = []):
+    def __init__(self, hand_size, deck, cards_in_hand = []):
         self.cards_in_hand = cards_in_hand
+        self.draw(hand_size, deck)
+        deck.draw(hand_size)
 
-    def draw(self, number_of_cards):
+    def draw(self, number_of_cards, deck):
         self.number_of_cards = number_of_cards
         for i in range(1, number_of_cards+1):
             self.add_card(deck.cards_in_deck[-i])
+        for c in self.cards_in_hand:
+            c.x = (800/len(self.cards_in_hand)) * self.cards_in_hand.index(c)
+            c.y = 300
 
     def add_card(self, card):
         self.cards_in_hand.append(card)

@@ -1,10 +1,13 @@
-import random
 import card_def
+import card_game
+import hand_def
+import game_constants
+import random
 import pygame
 
 class Deck(object):
 
-    def __init__(self, deck_size = 52, xloc = 400, yloc = 400, width = card_def.WIDTHCARD, height = card_def.HEIGHTCARD):
+    def __init__(self, deck_size = 52, xloc = 400, yloc = 400, width = game_constants.WIDTHCARD, height = game_constants.HEIGHTCARD):
         '''deck_size is number of cards in deck (36)
         Initializes and creates the deck. Deck is a shuffled list of card objects with suit and value numbers.
         '''

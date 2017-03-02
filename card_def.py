@@ -1,6 +1,7 @@
-import random
-import pygame
-import math
+import card_game
+import deck_def
+import hand_def
+import game_constants
 
 WIDTHCARD = 40
 HEIGHTCARD = 60
@@ -10,7 +11,7 @@ class Card(object):
 
     Attributes: Suit, Value"""
 
-    def __init__(self, suit, value, startx = -1, starty = -1, width = WIDTHCARD, height = HEIGHTCARD, discarded = False, played = False):
+    def __init__(self, suit, value, startx = -1, starty = -1, width = game_constants.WIDTHCARD, height = game_constants.HEIGHTCARD, discarded = False, played = False):
         self.suit = suit        #number, suit
         self.value = value
         self.x = startx
