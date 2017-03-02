@@ -45,13 +45,17 @@ class Hand(object):
 
     Attributes: cards"""
 
-    def __init__(self, cards_in_hand = []):
+    def __init__(self, hand_size, deck, cards_in_hand = []):
+        self.deck = deck
+        self.hand_size = hand_size
         self.cards_in_hand = cards_in_hand
+        self.draw(hand_size)
 
     def draw(self, number_of_cards):
         self.number_of_cards = number_of_cards
         for i in range(1, number_of_cards+1):
-            self.add_card(deck.cards_in_deck[-i])
+            self.add_card(deck.cards_in_deck[-1])
+            deck.draw(1)
 
     def add_card(self, card):
         self.cards_in_hand.append(card)
@@ -63,17 +67,31 @@ class Hand(object):
         index = 0
         for x in range(len(self.cards_in_hand)-1):
             if str(self.cards_in_hand[x]) == str(card):
-                #cards[i].delete_self()     #Will delete_self when we have a gme in front of us.
+                #cards[i].delete_self()     #Will delete_self when we have a game in front of us.
                 self.cards_in_hand.remove(self.cards_in_hand[x])
                 return
 
 
 if __name__ == "__main__":
-    deck = Deck(8)
-    hand = Hand()
-    print(hand.cards_in_hand)
-    hand.draw(7)
-    deck.draw(7)
-    print(hand.cards_in_hand)
-    hand.remove_card(hand.cards_in_hand[1])
-    print(hand.cards_in_hand)
+    pygame.init()
+
+    deck = Deck(36)
+    hand = Hand(5, deck)
+
+    window_width = 800
+    window_height = 600
+    c_white = (255,255,255)
+
+    pygame.display.set_caption('DURAK')
+    clock = pygame.time.Clock()
+    gameDisplay = pygame.display.set_mode((window_width, window_height))
+
+    running = True
+
+    while running:
+        pygame.display.update()
+        clock.tick(60)
+        gameDisplay.fill(c_white)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
