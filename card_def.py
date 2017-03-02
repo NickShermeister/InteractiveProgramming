@@ -22,7 +22,7 @@ class Card(object):
         return (0 < pt[0] - self.x < self.width) and (0 < pt[1] - self.y < self.height)
 
     def play(self, newx, newy):
-        pass #TODO: IMPLEMENT; MAKE THE CARD MOVE TO THE APPROPRIATE SPOT ON THE BOARD.
+        self.discard() #TODO: IMPLEMENT; MAKE THE CARD MOVE TO THE APPROPRIATE SPOT ON THE BOARD.
 
     def discard(self, discardx = 100, discardy = 400): #for animated discard, will be more applicable later
         self.x = discardx

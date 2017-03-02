@@ -4,6 +4,9 @@ import deck_def
 import hand_def
 import pygame
 
+import sys
+from pygame.locals import *
+
 BLACK = (0, 0, 0)
 BLUE = (0, 0, 255)
 
@@ -23,7 +26,7 @@ class MoveController(object):
         if event.type == pygame.MOUSEBUTTONDOWN:
             for model in self.models:
                 if model.contains_pt(pygame.mouse.get_pos()):
-                    model.play()
+                    model.play(300, 300)
                     break
         if event.type == pygame.KEYDOWN:
             for model in self.models:
@@ -34,8 +37,8 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((640, 480))
 
-    card1 = card_def.Card(200, 320)
-    card2 = card_def.Card(300, 320)
+    card1 = card_def.Card(0, 0, 200, 320)
+    card2 = card_def.Card(0, 0, 300, 320)
     models = [card1, card2]
 
     views = []

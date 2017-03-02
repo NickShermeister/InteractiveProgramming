@@ -36,7 +36,7 @@ class CardView(object):
         pygame.draw.rect(surface, BLUE, (int(model.x), int(model.y), model.width, model.height))
 
 
-class BounceController(object):
+class MoveController(object):
     def __init__(self, models):
         self.models = models
 
@@ -66,8 +66,8 @@ def main():
 
     controllers = []
 
-    controllers.append(BounceController([card1]))
-    controllers.append(BounceController([card2]))
+    controllers.append(MoveController([card1]))
+    controllers.append(MoveController([card2]))
 
     running = True
     while running:
