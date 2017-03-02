@@ -7,7 +7,7 @@ import pygame
 
 class Deck(object):
 
-    def __init__(self, deck_size = 52, xloc = 400, yloc = 400, width = game_constants.WIDTHCARD, height = game_constants.HEIGHTCARD):
+    def __init__(self, deck_size = 52, xloc = game_constants.window_width * (7/8), yloc = game_constants.window_height * (5/6), width = game_constants.WIDTHCARD, height = game_constants.HEIGHTCARD):
         '''deck_size is number of cards in deck (36)
         Initializes and creates the deck. Deck is a shuffled list of card objects with suit and value numbers.
         '''

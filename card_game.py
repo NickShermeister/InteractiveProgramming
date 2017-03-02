@@ -7,15 +7,37 @@ import pygame
 import sys
 from pygame.locals import *
 
+class DeckView(object):
+    def __init__(self,model):
+        self.model = model
+
+    def draw(self, surface):
+        model = self.model
+        pygame.draw.rect(surface, game_constants.c_red, (int(model.x), int(model.y), model.width, model.height))
+
 class CardView(object):
     def __init__(self, model):
         self.model = model
 
     def draw(self, surface):
         model = self.model
-        pygame.draw.rect(surface, c_white, (int(model.x), int(model.y), model.width, model.height))
+        pygame.draw.rect(surface, game_constants.c_white, (int(model.x), int(model.y), model.width, model.height))
 
 class MoveController(object):
+    def __init__(self, models):
+        self.models = models
+
+    def handle_event(self, event):
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            for model in self.models:
+                if model.contains_pt(pygame.mouse.get_pos()):
+                    model.play(model.x, model.y - 100)
+                    break
+        if event.type == pygame.KEYDOWN:
+            for model in self.models:
+                model.reset()
+
+class DrawController(object):
     def __init__(self, models):
         self.models = models
 
@@ -39,9 +61,9 @@ if __name__ == "__main__":
     clock = pygame.time.Clock()
     screen = pygame.display.set_mode((game_constants.window_width, game_constants.window_height))
 
-    views = []
+    views = [DeckView(deck)]
     controllers = []
-    models = []
+    models = [deck]
 
     for c in hand.cards_in_hand:
         views.append(CardView(c))
@@ -52,7 +74,7 @@ if __name__ == "__main__":
 
     while running:
         pygame.display.update()
-        clock.tick(60)
+        clock.tick(game_constants.fps)
         screen.fill(game_constants.c_black)
         for event in pygame.event.get():
             for cont in controllers:
