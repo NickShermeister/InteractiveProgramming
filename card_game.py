@@ -16,7 +16,7 @@ class DeckView(object):
         pygame.draw.rect(surface, game_constants.c_red, (int(model.x), int(model.y), model.width, model.height))
 
         font = pygame.font.SysFont("monospace", 15)
-        label = font.render(str(len(deck.cards_in_deck)), 1, game_constants.c_black)
+        label = font.render(str(len(model.cards_in_deck)), 1, game_constants.c_black)
         screen.blit(label, (model.x, model.y))
 
 class CardView(object):
@@ -26,6 +26,12 @@ class CardView(object):
     def draw(self, surface):
         model = self.model
         pygame.draw.rect(surface, game_constants.c_white, (int(model.x), int(model.y), model.width, model.height))
+
+        font = pygame.font.SysFont("monospace", 15)
+        val_label = font.render(str(model.value), 1, game_constants.c_black)
+        screen.blit(val_label, (model.x, model.y))
+        suit_label = font.render(game_constants.suit_dict[model.suit], 1, game_constants.c_black)
+        screen.blit(suit_label, (model.x, model.y + game_constants.HEIGHTCARD * 2/3))
 
 class MoveController(object):
     def __init__(self, models):
