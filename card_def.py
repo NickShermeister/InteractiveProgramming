@@ -24,14 +24,18 @@ class Card(object):
 
     def play(self, newx, newy, hand):
         if not self.discarded:
-            if (self.played):
-                self.discard(hand) #TODO: IMPLEMENT; MAKE THE CARD MOVE TO THE APPROPRIATE SPOT ON THE BOARD.
+            if self.played:
+                self.discard(hand)
             else:
                 self.x = newx
                 self.y = newy
                 self.played = True
+                hand.cards_in_hand.remove(self)
+                hand.cards_in_field.append(self)
         for c in hand.cards_in_hand:
             c.x = (((game_constants.window_width * (5/8))/len(hand.cards_in_hand)) * hand.cards_in_hand.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
+        for c in hand.cards_in_field:
+            c.x = (game_constants.window_width * (5/48) * hand.cards_in_field.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
 
 
     def discard(self, hand, discardx = game_constants.window_width * (1/8), discardy = game_constants.window_height * (1/2)):
@@ -39,7 +43,7 @@ class Card(object):
         self.x = discardx
         self.y = discardy
         self.discarded = True
-        hand.cards_in_hand.remove(self)
+        hand.cards_in_field.remove(self)
 
     #def __str__(self):
     #    return("%d of %s" % self.value, self.suit)

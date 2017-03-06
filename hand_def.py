@@ -8,8 +8,9 @@ class Hand(object):
 
     Attributes: cards"""
 
-    def __init__(self, hand_size, deck, cards_in_hand = []):
+    def __init__(self, hand_size, deck, cards_in_hand = [], cards_in_field = []):
         self.cards_in_hand = cards_in_hand
+        self.cards_in_field = cards_in_field
         self.draw(hand_size, deck)
         deck.draw(hand_size)
 
