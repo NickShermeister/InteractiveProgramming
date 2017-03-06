@@ -20,7 +20,7 @@ class Card(object):
         self.played_over = False
 
     def contains_pt(self, pt):
-        return (0 < pt[0] - self.x < self.width) and (0 < pt[1] - self.y < self.height)
+        return (0 < (pt[0] - self.x) < self.width) and (0 < (pt[1] - self.y) < self.height)
 
     def play(self, newx, newy, hand):
         if not self.discarded:
@@ -32,10 +32,6 @@ class Card(object):
                 self.played = True
                 hand.cards_in_hand.remove(self)
                 hand.cards_in_field.append(self)
-        for c in hand.cards_in_hand:
-            c.x = (((game_constants.window_width * (5/8))/len(hand.cards_in_hand)) * hand.cards_in_hand.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
-        for c in hand.cards_in_field:
-            c.x = (game_constants.window_width * (5/48) * hand.cards_in_field.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
 
 
     def discard(self, hand, discardx = game_constants.window_width * (1/8), discardy = game_constants.window_height * (1/2)):
