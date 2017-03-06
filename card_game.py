@@ -10,6 +10,7 @@ from pygame.locals import *
 class DeckView(object):
     def __init__(self,model):
         self.model = model
+        self.visibility = True
 
     def draw(self, surface):
         model = self.model
@@ -18,6 +19,11 @@ class DeckView(object):
         font = pygame.font.SysFont("monospace", 15)
         label = font.render(str(len(deck.cards_in_deck)), 1, game_constants.c_black)
         screen.blit(label, (model.x, model.y))
+        if len(deck.cards_in_deck) == 0:
+            self.visibility = False
+
+    def delete(self):
+        self.visibility = False
 
 class CardView(object):
     def __init__(self, model):
@@ -65,7 +71,7 @@ if __name__ == "__main__":
         models.append(c)
 
     running = True
-
+    deckalive = True
     while running:
         pygame.display.update()
         clock.tick(game_constants.fps)
@@ -77,5 +83,11 @@ if __name__ == "__main__":
                 running = False
         for view in views:
             view.draw(screen)
+        if deckalive:
+            if not views[0].visibility:
+                views = views[1:]
+                controllers = controllers[1:]
+                models = models[1:]
+                deckalive = False
 
     pygame.quit()
