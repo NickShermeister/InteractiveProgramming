@@ -63,6 +63,53 @@ class MoveController(object):
             for model in self.models:
                 model.reset()
 
+class GameRules(object):
+    def __init__(self, player_turn, deck_in):
+        self.turn = player_turn      #player_turn is a boolean; True means player 1 is going False means player 2 is going.
+        self.trump = deck_in.cards_in_deck[0].suit_label  #int of 0-3 definining the trump suit
+        self.num_Cards_Played = 0
+
+    def playable_defense(self, field_card, hand_card):
+        if not field.Card.played_over:
+            self.num_cards_played += 1
+            if field_card.suit == self.trump and hand_card.suit != self.trump:
+                return False
+            elif field_card.suit ==self.trump and hand_card.suit == self.trump:
+                if field_card.value > hand_card.value:
+                    return False
+                else:
+                    return True
+            elif hand_card.suit == self.trump:
+                return True
+            elif hand_card.suit == field_card.suit:
+                if field_card.value > hand_card.value:
+                    return False
+                else:
+                    return True
+            else:
+                return False
+        else:
+            return False
+
+    def playable_offense(self, hand_in, card_in):
+        if num_cards_played < 1:
+            num_cards_played += 1
+            return True
+        elif num_cards_played == 6:
+            return False
+        else:
+            if card_in.value in hand_in.cards_in_field:
+                return True
+            else:
+                return False
+
+    def beat_turn(self):
+        self.turn = not self.turn
+        self.num_cards_played = 0
+
+    def lost_turn(self):
+        self.num_cards_played = 0
+
 if __name__ == "__main__":
     pygame.init()
 
@@ -101,5 +148,4 @@ if __name__ == "__main__":
                 controllers = controllers[1:]
                 models = models[1:]
                 deckalive = False
-
-        pygame.quit()
+    pygame.quit()

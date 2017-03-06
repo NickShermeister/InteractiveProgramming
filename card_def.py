@@ -17,6 +17,7 @@ class Card(object):
         self.height = height
         self.discarded = discarded
         self.played = played
+        self.played_over = False
 
     def contains_pt(self, pt):
         return (0 < pt[0] - self.x < self.width) and (0 < pt[1] - self.y < self.height)
