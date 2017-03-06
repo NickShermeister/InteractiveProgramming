@@ -15,6 +15,10 @@ class DeckView(object):
         model = self.model
         pygame.draw.rect(surface, game_constants.c_red, (int(model.x), int(model.y), model.width, model.height))
 
+        font = pygame.font.SysFont("monospace", 15)
+        label = font.render(str(len(deck.cards_in_deck)), 1, game_constants.c_black)
+        screen.blit(label, (model.x, model.y))
+
 class CardView(object):
     def __init__(self, model):
         self.model = model
