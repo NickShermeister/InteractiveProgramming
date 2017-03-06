@@ -18,12 +18,13 @@ class DeckView(object):
 
         font = pygame.font.SysFont("monospace", 15)
         deck_label = font.render(str(len(model.cards_in_deck)), 1, game_constants.c_black)
-        trump_card_val_label = font.render(str(model.cards_in_deck[0].value), 1, game_constants.c_black)
-        trump_card_suit_label = font.render(game_constants.suit_dict[model.cards_in_deck[0].suit], 1, game_constants.c_black)
         screen.blit(deck_label, (model.x, model.y))
-        pygame.draw.rect(surface, game_constants.c_white, (int(model.x) - game_constants.WIDTHCARD * 1.2, int(model.y), model.width, model.height))
-        screen.blit(trump_card_val_label, (model.x - game_constants.WIDTHCARD * 1.2, model.y))
-        screen.blit(trump_card_suit_label, (model.x - game_constants.WIDTHCARD * 1.2, model.y + game_constants.HEIGHTCARD * 2/3))
+        if len(deck.cards_in_deck) > 0:
+            trump_card_val_label = font.render(str(model.cards_in_deck[0].value), 1, game_constants.c_black)
+            trump_card_suit_label = font.render(game_constants.suit_dict[model.cards_in_deck[0].suit], 1, game_constants.c_black)
+            pygame.draw.rect(surface, game_constants.c_white, (int(model.x) - game_constants.WIDTHCARD * 1.2, int(model.y), model.width, model.height))
+            screen.blit(trump_card_val_label, (model.x - game_constants.WIDTHCARD * 1.2, model.y))
+            screen.blit(trump_card_suit_label, (model.x - game_constants.WIDTHCARD * 1.2, model.y + game_constants.HEIGHTCARD * 2/3))
         if len(deck.cards_in_deck) == 0:
             self.visibility = False
 
