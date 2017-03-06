@@ -7,3 +7,4 @@ c_blue = (0,0,255)
 WIDTHCARD = 40
 HEIGHTCARD = 60
 fps = 60
+suit_dict = {0:'diamond', 1:'club', 2:'spade', 3:'heart'}
