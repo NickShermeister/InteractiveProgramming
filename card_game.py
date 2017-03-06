@@ -101,7 +101,5 @@ if __name__ == "__main__":
                 controllers = controllers[1:]
                 models = models[1:]
                 deckalive = False
-        if not deckalive:
 
-
-    pygame.quit()
+        pygame.quit()
