@@ -35,15 +35,11 @@ class Card(object):
                 print('\n', hand.cards_in_hand)
                 print('\n',hand.cards_in_field)
                 hand.cards_in_field.append(self)
-<<<<<<< HEAD
                 print('\n',hand.cards_in_field, '\n', '\n')
         for c in hand.cards_in_hand:
             c.x = (((game_constants.window_width * (5/8))/len(hand.cards_in_hand)) * hand.cards_in_hand.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
         for c in hand.cards_in_field:
             c.x = (game_constants.window_width * (5/48) * hand.cards_in_field.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
-=======
->>>>>>> ad127eb12cd3a2ea4333d4ef3b0cbd9a42c48220
-
 
     def discard(self, hand, discardx = game_constants.window_width * (1/8), discardy = game_constants.window_height * (1/2)):
         #for animated discard, will be more applicable later

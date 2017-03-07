@@ -58,7 +58,9 @@ class MoveController(object):
                         controllers.append(MoveController([deck.cards_in_deck[len(deck.cards_in_deck)-1]]))
                         models.append(deck.cards_in_deck[len(deck.cards_in_deck)-1])
                     model.play(model.x, model.y - game_constants.window_height * (1/6), hand)
-                    break
+                    print("Here again.")
+                    return True
+        return False
 
 class GameRules(object):
     def __init__(self, player_turn, deck_in):
@@ -134,7 +136,8 @@ if __name__ == "__main__":
         screen.fill(game_constants.c_black)
         for event in pygame.event.get():
             for cont in controllers:
-                cont.handle_event(event)
+                if cont.handle_event(event):
+                    break
             if event.type == pygame.QUIT:
                 running = False
         for view in views:
