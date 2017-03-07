@@ -50,11 +50,10 @@ class MoveController(object):
         self.models = models
 
     def handle_event(self, event):
-        if event.type == pygame.MOUSEBUTTONUP:
+        if event.type == pygame.MOUSEBUTTONDOWN:
             for model in self.models:
                 if model.contains_pt(pygame.mouse.get_pos()):
                     if model == deck:
-                        print(hand.cards_in_hand)
                         views.append(CardView(deck.cards_in_deck[len(deck.cards_in_deck)-1]))
                         controllers.append(MoveController([deck.cards_in_deck[len(deck.cards_in_deck)-1]]))
                         models.append(deck.cards_in_deck[len(deck.cards_in_deck)-1])
