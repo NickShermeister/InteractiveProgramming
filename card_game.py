@@ -60,9 +60,6 @@ class MoveController(object):
                         models.append(deck.cards_in_deck[len(deck.cards_in_deck)-1])
                     model.play(model.x, model.y - game_constants.window_height * (1/6), hand)
                     break
-        if event.type == pygame.KEYDOWN:
-            for model in self.models:
-                model.reset()
 
 class GameRules(object):
     def __init__(self, player_turn, deck_in):

@@ -30,8 +30,12 @@ class Card(object):
                 self.x = newx
                 self.y = newy
                 self.played = True
+                print('\n',hand.cards_in_hand)
                 hand.cards_in_hand.remove(self)
+                print('\n', hand.cards_in_hand)
+                print('\n',hand.cards_in_field)
                 hand.cards_in_field.append(self)
+                print('\n',hand.cards_in_field, '\n', '\n')
         for c in hand.cards_in_hand:
             c.x = (((game_constants.window_width * (5/8))/len(hand.cards_in_hand)) * hand.cards_in_hand.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
         for c in hand.cards_in_field:
