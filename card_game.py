@@ -35,6 +35,14 @@ class DeckView(object):
     def delete(self):           #An alternative method to deleting the deck.
         self.visibility = False
 
+class ButtonView(object):         #A view created for cards.
+    def __init__(self, model):
+        self.model = model
+
+    def draw(self, surface):
+        model = self.model
+        pygame.draw.rect(surface, game_constants.c_blue, (int(model.x), int(model.y), model.width, model.height))
+
 class CardView(object):         #A view created for cards.
     def __init__(self, model):
         self.model = model
@@ -70,13 +78,23 @@ class MoveController(object):       #The basic controller for our game.
                         else:
                             model.play(model.x, model.y, hand)
         if event.type == pygame.MOUSEBUTTONUP:
-            if self.dragging != None:
+            if self.dragging != None and game_rules.turn == True:
                 if self.dragging.y < game_constants.window_height * (1/2) + game_constants.HEIGHTCARD:
                     if not self.dragging.opponent:
                         self.dragging.play(self.dragging.x, game_constants.window_height * (1/2), hand)
                     else:
                         self.dragging.play(self.dragging.x, game_constants.window_height * (7/20), hand)
                 else:
+                    for c in hand.cards_in_hand:    #relocate and then redisplay the screen with updated location of cards.
+                        c.x = (((game_constants.window_width * (5/8))/len(hand.cards_in_hand)) * hand.cards_in_hand.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
+                        c.y = game_constants.window_height * (2/3)
+            if self.dragging != None and game_rules.turn == False:
+                played_on = False
+                for c in hand.player2_field:
+                    if c.contains_pt(pygame.mouse.get_pos()):
+                        self.dragging.play(c.x, c.y + game_constants.HEIGHTCARD/2, hand)
+                        played_on = True
+                if played_on == False:
                     for c in hand.cards_in_hand:    #relocate and then redisplay the screen with updated location of cards.
                         c.x = (((game_constants.window_width * (5/8))/len(hand.cards_in_hand)) * hand.cards_in_hand.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
                         c.y = game_constants.window_height * (2/3)
@@ -90,11 +108,15 @@ class GameRules(object):
 
         Attributes: turn, trump, num_Cards_Played
     """
-    def __init__(self, player_turn, deck_in):
+    def __init__(self, player_turn, deck_in, x = game_constants.window_width/16, y = game_constants.window_height/2, width = 50, height = 30):
         self.turn = player_turn      #player_turn is a boolean; True means player 1 is going False means player 2 is going.
-        self.trump = deck_in.cards_in_deck[0].suit_label  #int of 0-3 definining the trump suit
+        self.trump = deck_in.cards_in_deck[0].suit  #int of 0-3 definining the trump suit
         self.num_Cards_Played = 0
         self.beat = False
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
 
     def playable_defense(self, field_card, hand_card):      #Checks for the playability of a card on another card defensively.
         if not field.Card.played_over:
@@ -153,6 +175,9 @@ class GameRules(object):
             for card in hands.player1_field:   #TODO: CHANGE THIS SO IT DISCARDS BOTH LEVELS OF CARDS
                 card.discard()
 
+    def contains_pt(self, pt):      #Returns True if a point is where the card is displayed; False otherwise.
+        return (0 < (pt[0] - self.x) < self.width) and (0 < (pt[1] - self.y) < self.height)
+
 
 if __name__ == "__main__":
     pygame.init()
@@ -161,15 +186,15 @@ if __name__ == "__main__":
     hand = hand_def.Hand(game_constants.starting_hand_size, deck)
     testcard = card_def.Card(0, 0, 100, 100)            #just mark a card as "opponent" to block it printing anything.
     testcard.opponent = True
-
+    game_rules = GameRules(True, deck)
 
     pygame.display.set_caption('DURAK')
     clock = pygame.time.Clock()
     screen = pygame.display.set_mode((game_constants.window_width, game_constants.window_height))
 
-    views = [DeckView(deck)]
-    controllers = [MoveController([deck])]
-    models = [deck]
+    views = [DeckView(deck), ButtonView(game_rules)]
+    controllers = [MoveController([deck]), MoveController([game_rules])]
+    models = [deck, game_rules]
 
     testview = CardView(testcard)
 
@@ -201,9 +226,9 @@ if __name__ == "__main__":
         testview.draw(screen)
         if deckalive:
             if not views[0].visibility:
-                views = views[1:]
-                controllers = controllers[1:]
-                models = models[1:]
+                views = views[2:]
+                controllers = controllers[2:]
+                models = models[2:]
                 deckalive = False
 
     pygame.quit()
