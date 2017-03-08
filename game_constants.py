@@ -3,6 +3,7 @@
 window_width = 800
 window_height = 600
 starting_hand_size = 6
+max_cards_played = 6
 c_white = (255,255,255)
 c_black = (0,0,0)
 c_red = (255,0,0)

@@ -106,7 +106,7 @@ class GameRules(object):
         if num_cards_played < 1:
             num_cards_played += 1
             return True
-        elif num_cards_played == 6:
+        elif num_cards_played >= game_constants.max_cards_played:
             return False
         else:
             if card_in.value in hand_in.cards_in_field:
