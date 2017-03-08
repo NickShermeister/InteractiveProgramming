@@ -28,27 +28,30 @@ class Card(object):
         self.y = newy
 
     def play(self, newx, newy, hand, card_to_play_on = None):
-        if card_to_play_on is None:
-            if not self.discarded:
-                if self.played:             #A way to tell if the card is in the field; if so, discard it.
-                    self.discard(hand)
-                else:                       #otherwise, move the card to the field (assuming it is a legal move).
-                    self.x = newx
-                    self.y = newy
-                    self.played = True
-                    hand.cards_in_hand.remove(self)
-                    hand.player1_field.append(self)
+        if not self.opponent:
+            if card_to_play_on is None:
+                if not self.discarded:
+                    if self.played:             #A way to tell if the card is in the field; if so, discard it.
+                        self.discard(hand)
+                    else:                       #otherwise, move the card to the field (assuming it is a legal move).
+                        self.x = newx
+                        self.y = newy
+                        self.played = True
+                        hand.cards_in_hand.remove(self)
+                        hand.player1_field.append(self)
+            else:
+                self.x = card_to_play_on.x
+                self.y = card_to_play_on.y + game_constants.HEIGHTCARD
+                hand.cards_in_hand.remove(self)
+                hand.player1_field.append(self)
+            for c in hand.cards_in_hand:    #relocate and then redisplay the screen with updated location of cards.
+                c.x = (((game_constants.window_width * (5/8))/len(hand.cards_in_hand)) * hand.cards_in_hand.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
+            for c in hand.player1_field:
+                c.x = (game_constants.window_width * (5/48) * hand.player1_field.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
+            for c in hand.cards_in_opponent:
+                c.x = (((game_constants.window_width * (5/8))/len(hand.cards_in_opponent)) * hand.cards_in_opponent.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
         else:
-            self.x = card_to_play_on.x
-            self.y = card_to_play_on.y + game_constants.HEIGHTCARD
-            hand.cards_in_hand.remove(self)
-            hand.cards_on_field.append(self)
-        for c in hand.cards_in_hand:    #relocate and then redisplay the screen with updated location of cards.
-            c.x = (((game_constants.window_width * (5/8))/len(hand.cards_in_hand)) * hand.cards_in_hand.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
-        for c in hand.player1_field:
-            c.x = (game_constants.window_width * (5/48) * hand.player1_field.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
-        for c in hand.cards_in_opponent:
-            c.x = (((game_constants.window_width * (5/8))/len(hand.cards_in_opponent)) * hand.cards_in_hand.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
+            pass #TODO: IMPLEMENT
 
     def discard(self, hand, discardx = game_constants.window_width * (1/8), discardy = game_constants.window_height * (1/2)):
         #for animated discard, will be more applicable later

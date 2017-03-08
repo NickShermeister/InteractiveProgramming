@@ -168,13 +168,17 @@ class GameRules(object):
         if self.beat == False:
             if self.turn:
                 for card in hands.player1_field:
+                    card.opponent = True
                     hands.cards_in_opponent.append(card)
                 for card in hands.player2_field:
+                    card.opponent = True
                     hands.cards_in_opponent.append(card)
             else:
                 for card in hands.player1_field:
+                    card.opponent = False
                     hands.cards_in_hand.append(card)
                 for card in hands.player2_field:
+                    card.opponent = False
                     hands.cards_in_hand.append(card)
         for card in hands.player1_field:
             card.discard()
@@ -190,7 +194,7 @@ if __name__ == "__main__":
 
     deck = deck_def.Deck(36)
     hand = hand_def.Hand(game_constants.starting_hand_size, deck)
-    game_rules = GameRules(False, deck)
+    game_rules = GameRules(True, deck)
 
     pygame.display.set_caption('DURAK')
     clock = pygame.time.Clock()
