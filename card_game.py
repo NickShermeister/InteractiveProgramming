@@ -49,6 +49,7 @@ class CardView(object):         #A view created for cards.
             screen.blit(val_label, (model.x, model.y))
             screen.blit(suit_label, (model.x, model.y + game_constants.HEIGHTCARD * 2/3))
 
+
 class MoveController(object):       #The basic controller for our game.
     def __init__(self, models):
         self.models = models
@@ -124,7 +125,7 @@ class GameRules(object):
         elif num_cards_played >= game_constants.max_cards_played:
             return False
         else:
-            if card_in.value in hand_in.cards_in_field:
+            if card_in.value in hand_in.player1_field:
                 return True
             else:
                 return False
@@ -144,12 +145,12 @@ class GameRules(object):
     def cleanup(self, hands, deck):
         if self.beat == False:
             if self.turn:
-                for card in hands.cards_in_field: #TODO: CHANGE SO IT ADDS BOTH LEVELS OF CARDS
+                for card in hands.player1_field: #TODO: CHANGE SO IT ADDS BOTH LEVELS OF CARDS
                     hands.cards_in_opponent.append(card)
             else:
-                for card in hands.cards_in_field: #TODO: CHANGE SO IT ADDS BOTH LEVELS OF CARDS
+                for card in hands.player1_field: #TODO: CHANGE SO IT ADDS BOTH LEVELS OF CARDS
                     hands.cards_in_hand.append(card)
-            for card in hands.cards_in_field:   #TODO: CHANGE THIS SO IT DISCARDS BOTH LEVELS OF CARDS
+            for card in hands.player1_field:   #TODO: CHANGE THIS SO IT DISCARDS BOTH LEVELS OF CARDS
                 card.discard()
 
 
@@ -158,7 +159,6 @@ if __name__ == "__main__":
 
     deck = deck_def.Deck(36)
     hand = hand_def.Hand(game_constants.starting_hand_size, deck)
-    opponent_hand = hand_def.Hand(game_constants.starting_hand_size, deck)
     testcard = card_def.Card(0, 0, 100, 100)            #just mark a card as "opponent" to block it printing anything.
     testcard.opponent = True
 
@@ -178,11 +178,11 @@ if __name__ == "__main__":
         controllers.append(MoveController([c]))
         models.append(c)
 
-    # for c in ophand.cards_in_hand:
-    #     c.opponent = True
-    #     views.append(CardView(c))
-    #     controllers.append(MoveController([c]))
-    #     models.append(c)
+    for c in hand.cards_in_opponent:
+        c.opponent = True
+        views.append(CardView(c))
+        controllers.append(MoveController([c]))
+        models.append(c)
 
     running = True
     deckalive = True

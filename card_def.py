@@ -37,7 +37,7 @@ class Card(object):
                     self.y = newy
                     self.played = True
                     hand.cards_in_hand.remove(self)
-                    hand.cards_in_field.append(self)
+                    hand.player1_field.append(self)
         else:
             self.x = card_to_play_on.x
             self.y = card_to_play_on.y + game_constants.HEIGHTCARD
@@ -45,8 +45,8 @@ class Card(object):
             hand.cards_on_field.append(self)
         for c in hand.cards_in_hand:    #relocate and then redisplay the screen with updated location of cards.
             c.x = (((game_constants.window_width * (5/8))/len(hand.cards_in_hand)) * hand.cards_in_hand.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
-        for c in hand.cards_in_field:
-            c.x = (game_constants.window_width * (5/48) * hand.cards_in_field.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
+        for c in hand.player1_field:
+            c.x = (game_constants.window_width * (5/48) * hand.player1_field.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
         for c in hand.cards_in_opponent:
             c.x = (((game_constants.window_width * (5/8))/len(hand.cards_in_hand)) * hand.cards_in_hand.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
 
@@ -55,7 +55,7 @@ class Card(object):
         self.x = discardx
         self.y = discardy
         self.discarded = True
-        hand.cards_in_field.remove(self)
+        hand.player1_field.remove(self)
 
     #def __str__(self):
     #    return("%d of %s" % self.value, self.suit)
