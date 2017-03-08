@@ -135,16 +135,22 @@ class GameRules(object):
     def beat_turn(self):                    #Resets based on a successful defense.
         self.turn = not self.turn
         self.num_cards_played = 0
+        self.beat = True
 
     def lost_turn(self):                    #Resets based on a successful offense.
         self.num_cards_played = 0
-        self.beat = True
+        self.beat = False
 
-    def cleanup(self, player_hand, opposing_hand, field, deck):
-        if self.beat == True:
-            pass #TODO: Implement
-        else:
-            pass
+    def cleanup(self, hands, deck):
+        if self.beat == False:
+            if self.turn:
+                for card in hands.cards_in_field: #TODO: CHANGE SO IT ADDS BOTH LEVELS OF CARDS
+                    hands.cards_in_opponent.append(card)
+            else:
+                for card in hands.cards_in_field: #TODO: CHANGE SO IT ADDS BOTH LEVELS OF CARDS
+                    hands.cards_in_hand.append(card)
+            for card in hands.cards_in_field:   #TODO: CHANGE THIS SO IT DISCARDS BOTH LEVELS OF CARDS
+                card.discard()
 
 
 if __name__ == "__main__":
@@ -152,7 +158,7 @@ if __name__ == "__main__":
 
     deck = deck_def.Deck(36)
     hand = hand_def.Hand(game_constants.starting_hand_size, deck)
-    ophand = hand_def.Hand(game_constants.starting_hand_size, deck)
+    opponent_hand = hand_def.Hand(game_constants.starting_hand_size, deck)
     testcard = card_def.Card(0, 0, 100, 100)            #just mark a card as "opponent" to block it printing anything.
     testcard.opponent = True
 
