@@ -88,9 +88,9 @@ class MoveController(object):       #The basic controller for our game.
 class GameRules(object):
     """The rules that drive a normal game of Durak.
 
-        Attributes: turn, trump, num_Cards_Played
+        Attributes: turn, trump, num_Cards_Played, beat
     """
-    def __init__(self, player_turn, deck_in):
+    def __init__(self, player_turn, deck_in):   #needs deck to determine Trump card.
         self.turn = player_turn      #player_turn is a boolean; True means player 1 is going False means player 2 is going.
         self.trump = deck_in.cards_in_deck[0].suit_label  #int of 0-3 definining the trump suit
         self.num_Cards_Played = 0
@@ -159,9 +159,6 @@ if __name__ == "__main__":
 
     deck = deck_def.Deck(36)
     hand = hand_def.Hand(game_constants.starting_hand_size, deck)
-    testcard = card_def.Card(0, 0, 100, 100)            #just mark a card as "opponent" to block it printing anything.
-    testcard.opponent = True
-
 
     pygame.display.set_caption('DURAK')
     clock = pygame.time.Clock()
@@ -171,12 +168,11 @@ if __name__ == "__main__":
     controllers = [MoveController([deck])]
     models = [deck]
 
-    testview = CardView(testcard)
-
     for c in hand.cards_in_hand:
         views.append(CardView(c))
         controllers.append(MoveController([c]))
         models.append(c)
+
 
     for c in hand.cards_in_opponent:
         c.opponent = True
@@ -186,6 +182,7 @@ if __name__ == "__main__":
 
     running = True
     deckalive = True
+    print(hand.cards_in_opponent)
     while running:
         pygame.display.update()
         clock.tick(game_constants.fps)
@@ -198,7 +195,6 @@ if __name__ == "__main__":
                 running = False
         for view in views:
             view.draw(screen)
-        testview.draw(screen)
         if deckalive:
             if not views[0].visibility:
                 views = views[1:]
