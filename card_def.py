@@ -42,7 +42,7 @@ class Card(object):
             self.x = card_to_play_on.x
             self.y = card_to_play_on.y + game_constants.HEIGHTCARD
             hand.cards_in_hand.remove(self)
-            hand.cards_in_field.append(self)
+            hand.cards_on_field.append(self)
         for c in hand.cards_in_hand:    #relocate and then redisplay the screen with updated location of cards.
             c.x = (((game_constants.window_width * (5/8))/len(hand.cards_in_hand)) * hand.cards_in_hand.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
         for c in hand.cards_in_field:
