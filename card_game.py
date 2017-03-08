@@ -190,7 +190,7 @@ if __name__ == "__main__":
 
     deck = deck_def.Deck(36)
     hand = hand_def.Hand(game_constants.starting_hand_size, deck)
-    game_rules = GameRules(True, deck)
+    game_rules = GameRules(False, deck)
 
     pygame.display.set_caption('DURAK')
     clock = pygame.time.Clock()
