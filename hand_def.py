@@ -28,12 +28,6 @@ class Hand(object):
     def add_card(self, card):
         self.cards_in_hand.append(card)
 
-    def update(self):
-        for c in self.cards_in_hand:
-            c.x = (((game_constants.window_width * (5/8))/len(self.cards_in_hand)) * self.cards_in_hand.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
-        for c in self.cards_in_field:
-            c.x = (game_constants.window_width * (5/48) * self.cards_in_field.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
-
     def __str__(self):
         return ', '.join(self.cards_in_hand)
 

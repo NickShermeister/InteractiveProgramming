@@ -23,8 +23,12 @@ class Card(object):
     def contains_pt(self, pt):      #Returns True if a point is where the card is displayed; False otherwise.
         return (0 < (pt[0] - self.x) < self.width) and (0 < (pt[1] - self.y) < self.height)
 
+    def move(self, newx, newy):
+        self.x = newx
+        self.y = newy
+
     def play(self, newx, newy, hand, card_to_play_on = None):
-        if card_to_play_on is not None:
+        if card_to_play_on is None:
             if not self.discarded:
                 if self.played:             #A way to tell if the card is in the field; if so, discard it.
                     self.discard(hand)
@@ -32,12 +36,8 @@ class Card(object):
                     self.x = newx
                     self.y = newy
                     self.played = True
-                    print('\n',hand.cards_in_hand)
                     hand.cards_in_hand.remove(self)
-                    print('\n', hand.cards_in_hand)
-                    print('\n',hand.cards_in_field)
                     hand.cards_in_field.append(self)
-                    print('\n',hand.cards_in_field, '\n', '\n')
         else:
             self.x = card_to_play_on.x
             self.y = card_to_play_on.y + game_constants.HEIGHTCARD

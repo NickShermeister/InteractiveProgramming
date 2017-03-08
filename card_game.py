@@ -52,6 +52,7 @@ class CardView(object):         #A view created for cards.
 class MoveController(object):       #The basic controller for our game.
     def __init__(self, models):
         self.models = models
+        self.dragging = None
 
     def handle_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -61,12 +62,26 @@ class MoveController(object):       #The basic controller for our game.
                         views.append(CardView(deck.cards_in_deck[len(deck.cards_in_deck)-1]))
                         controllers.append(MoveController([deck.cards_in_deck[len(deck.cards_in_deck)-1]]))
                         models.append(deck.cards_in_deck[len(deck.cards_in_deck)-1])
-                    if not model.opponent:
-                        model.play(model.x, model.y - game_constants.window_height * (1/6), hand)
+                        model.play(hand)
+                    if model != deck:
+                        if model in hand.cards_in_hand:
+                            self.dragging = model
+                        else:
+                            model.play(model.x, model.y, hand)
+        if event.type == pygame.MOUSEBUTTONUP:
+            if self.dragging != None:
+                if self.dragging.y < game_constants.window_height * (1/2) + game_constants.HEIGHTCARD:
+                    if not self.dragging.opponent:
+                        self.dragging.play(self.dragging.x, game_constants.window_height * (1/2), hand)
                     else:
-                        model.play(model.x, model.y + game_constants.window_height * (1/6), hand)
-                    print("Here again.")
-                    return True
+                        self.dragging.play(self.dragging.x, game_constants.window_height * (7/20), hand)
+                else:
+                    for c in hand.cards_in_hand:    #relocate and then redisplay the screen with updated location of cards.
+                        c.x = (((game_constants.window_width * (5/8))/len(hand.cards_in_hand)) * hand.cards_in_hand.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
+                        c.y = game_constants.window_height * (2/3)
+            self.dragging = None
+        if self.dragging != None:
+            self.dragging.move(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
         return False
 
 class GameRules(object):

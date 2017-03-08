@@ -38,7 +38,7 @@ class Deck(object):
         '''
         return(random.shuffle(self.cards_in_deck))
 
-    def play(self, x, y, hand):
+    def play(self, hand):
         """Gives a card to a hand and removes said card from itself.
         """
         hand.draw(1, self)
