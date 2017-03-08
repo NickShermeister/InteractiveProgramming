@@ -108,11 +108,7 @@ class GameRules(object):
 
         Attributes: turn, trump, num_Cards_Played, beat
     """
-<<<<<<< HEAD
-    def __init__(self, player_turn, deck_in):   #needs deck to determine Trump card.
-=======
     def __init__(self, player_turn, deck_in, x = game_constants.window_width/16, y = game_constants.window_height/2, width = 50, height = 30):
->>>>>>> 39b6a4c661e2c69a1ca0a5dc30a07549c1042e35
         self.turn = player_turn      #player_turn is a boolean; True means player 1 is going False means player 2 is going.
         self.trump = deck_in.cards_in_deck[0].suit  #int of 0-3 definining the trump suit
         self.num_Cards_Played = 0
@@ -171,13 +167,19 @@ class GameRules(object):
     def cleanup(self, hands, deck):
         if self.beat == False:
             if self.turn:
-                for card in hands.player1_field: #TODO: CHANGE SO IT ADDS BOTH LEVELS OF CARDS
+                for card in hands.player1_field:
+                    hands.cards_in_opponent.append(card)
+                for card in hands.player2_field:
                     hands.cards_in_opponent.append(card)
             else:
-                for card in hands.player1_field: #TODO: CHANGE SO IT ADDS BOTH LEVELS OF CARDS
+                for card in hands.player1_field:
                     hands.cards_in_hand.append(card)
-            for card in hands.player1_field:   #TODO: CHANGE THIS SO IT DISCARDS BOTH LEVELS OF CARDS
-                card.discard()
+                for card in hands.player2_field:
+                    hands.cards_in_hand.append(card)
+        for card in hands.player1_field:
+            card.discard()
+        for card in hands.player2_field:
+            card.discard()
 
     def contains_pt(self, pt):      #Returns True if a point is where the card is displayed; False otherwise.
         return (0 < (pt[0] - self.x) < self.width) and (0 < (pt[1] - self.y) < self.height)
@@ -202,7 +204,6 @@ if __name__ == "__main__":
         views.append(CardView(c))
         controllers.append(MoveController([c]))
         models.append(c)
-
 
     for c in hand.cards_in_opponent:
         c.opponent = True
