@@ -42,12 +42,12 @@ class CardView(object):         #A view created for cards.
     def draw(self, surface):
         model = self.model
         pygame.draw.rect(surface, game_constants.c_white, (int(model.x), int(model.y), model.width, model.height))
-
-        font = pygame.font.SysFont("monospace", 15)
-        val_label = font.render(str(model.value), 1, game_constants.c_black)
-        suit_label = font.render(game_constants.suit_dict[model.suit], 1, game_constants.c_black)
-        screen.blit(val_label, (model.x, model.y))
-        screen.blit(suit_label, (model.x, model.y + game_constants.HEIGHTCARD * 2/3))
+        if not model.opponent:      #if the card isn't in the opponent's hand it will show its value and suit.
+            font = pygame.font.SysFont("monospace", 15)
+            val_label = font.render(str(model.value), 1, game_constants.c_black)
+            suit_label = font.render(game_constants.suit_dict[model.suit], 1, game_constants.c_black)
+            screen.blit(val_label, (model.x, model.y))
+            screen.blit(suit_label, (model.x, model.y + game_constants.HEIGHTCARD * 2/3))
 
 class MoveController(object):       #The basic controller for our game.
     def __init__(self, models):
@@ -75,6 +75,7 @@ class GameRules(object):
         self.turn = player_turn      #player_turn is a boolean; True means player 1 is going False means player 2 is going.
         self.trump = deck_in.cards_in_deck[0].suit_label  #int of 0-3 definining the trump suit
         self.num_Cards_Played = 0
+        self.beat = False
 
     def playable_defense(self, field_card, hand_card):      #Checks for the playability of a card on another card defensively.
         if not field.Card.played_over:
@@ -116,12 +117,24 @@ class GameRules(object):
 
     def lost_turn(self):                    #Resets based on a successful offense.
         self.num_cards_played = 0
+        self.beat = True
+
+    def cleanup(self, player_hand, opposing_hand, field, deck):
+        if self.beat == True:
+            pass #TODO: Implement
+        else:
+
+
 
 if __name__ == "__main__":
     pygame.init()
 
     deck = deck_def.Deck(36)
-    hand = hand_def.Hand(5, deck)
+    hand = hand_def.Hand(game_constants.starting_hand_size, deck)
+    ophand = hand_def.Hand(game_constants.starting_hand_size, deck)
+    testcard = card_def.Card(0, 0, 100, 100)            #just mark a card as "opponent" to block it printing anything.
+    testcard.opponent = True
+
 
     pygame.display.set_caption('DURAK')
     clock = pygame.time.Clock()
@@ -131,10 +144,18 @@ if __name__ == "__main__":
     controllers = [MoveController([deck])]
     models = [deck]
 
+    testview = CardView(testcard)
+
     for c in hand.cards_in_hand:
         views.append(CardView(c))
         controllers.append(MoveController([c]))
         models.append(c)
+
+    # for c in ophand.cards_in_hand:
+    #     c.opponent = True
+    #     views.append(CardView(c))
+    #     controllers.append(MoveController([c]))
+    #     models.append(c)
 
     running = True
     deckalive = True
@@ -150,6 +171,7 @@ if __name__ == "__main__":
                 running = False
         for view in views:
             view.draw(screen)
+        testview.draw(screen)
         if deckalive:
             if not views[0].visibility:
                 views = views[1:]

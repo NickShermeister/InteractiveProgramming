@@ -18,6 +18,7 @@ class Card(object):
         self.discarded = discarded
         self.played = played
         self.played_over = False        #Will become true if a card is played over it.
+        self.opponent = False           #Gets overwritten if it enters the opposing player's hand, which will turn it invisible
 
     def contains_pt(self, pt):      #Returns True if a point is where the card is displayed; False otherwise.
         return (0 < (pt[0] - self.x) < self.width) and (0 < (pt[1] - self.y) < self.height)
