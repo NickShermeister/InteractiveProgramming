@@ -6,7 +6,7 @@ import game_constants
 class Card(object):
     """The basic card behind everything.
 
-    Attributes: Suit, Value"""
+    Attributes: Suit, Value, x (location), y (location), width, height, discarded, played, played_over"""
 
     def __init__(self, suit, value, startx = -1, starty = -1, width = game_constants.WIDTHCARD, height = game_constants.HEIGHTCARD, discarded = False, played = False):
         self.suit = suit        #number, suit
@@ -17,16 +17,16 @@ class Card(object):
         self.height = height
         self.discarded = discarded
         self.played = played
-        self.played_over = False
+        self.played_over = False        #Will become true if a card is played over it.
 
-    def contains_pt(self, pt):
+    def contains_pt(self, pt):      #Returns True if a point is where the card is displayed; False otherwise.
         return (0 < (pt[0] - self.x) < self.width) and (0 < (pt[1] - self.y) < self.height)
 
     def play(self, newx, newy, hand):
         if not self.discarded:
-            if self.played:
+            if self.played:             #A way to tell if the card is in the field; if so, discard it.
                 self.discard(hand)
-            else:
+            else:                       #otherwise, move the card to the field (assuming it is a legal move).
                 self.x = newx
                 self.y = newy
                 self.played = True
@@ -36,7 +36,7 @@ class Card(object):
                 print('\n',hand.cards_in_field)
                 hand.cards_in_field.append(self)
                 print('\n',hand.cards_in_field, '\n', '\n')
-        for c in hand.cards_in_hand:
+        for c in hand.cards_in_hand:    #relocate and then redisplay the screen with updated location of cards.
             c.x = (((game_constants.window_width * (5/8))/len(hand.cards_in_hand)) * hand.cards_in_hand.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
         for c in hand.cards_in_field:
             c.x = (game_constants.window_width * (5/48) * hand.cards_in_field.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2

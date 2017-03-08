@@ -8,30 +8,34 @@ import sys
 from pygame.locals import *
 
 class DeckView(object):
+    """A view that shows where the deck is, and how many cards are left in it.
+
+        Attributes: visibility, model
+    """
     def __init__(self,model):
         self.model = model
         self.visibility = True
 
-    def draw(self, surface):
+    def draw(self, surface):        #Used to describe how the deck is drawn in pygame.
         model = self.model
         pygame.draw.rect(surface, game_constants.c_red, (int(model.x), int(model.y), model.width, model.height))
 
         font = pygame.font.SysFont("monospace", 15)
         deck_label = font.render(str(len(model.cards_in_deck)), 1, game_constants.c_black)
         screen.blit(deck_label, (model.x, model.y))
-        if len(deck.cards_in_deck) > 0:
+        if len(deck.cards_in_deck) > 0:         #As long as there are cards in the deck, it will be visible.
             trump_card_val_label = font.render(str(model.cards_in_deck[0].value), 1, game_constants.c_black)
             trump_card_suit_label = font.render(game_constants.suit_dict[model.cards_in_deck[0].suit], 1, game_constants.c_black)
             pygame.draw.rect(surface, game_constants.c_white, (int(model.x) - game_constants.WIDTHCARD * 1.2, int(model.y), model.width, model.height))
             screen.blit(trump_card_val_label, (model.x - game_constants.WIDTHCARD * 1.2, model.y))
             screen.blit(trump_card_suit_label, (model.x - game_constants.WIDTHCARD * 1.2, model.y + game_constants.HEIGHTCARD * 2/3))
-        if len(deck.cards_in_deck) == 0:
+        if len(deck.cards_in_deck) == 0:        #Auto-deletion of deck if there are no cards in it.
             self.visibility = False
 
-    def delete(self):
+    def delete(self):           #An alternative method to deleting the deck.
         self.visibility = False
 
-class CardView(object):
+class CardView(object):         #A view created for cards.
     def __init__(self, model):
         self.model = model
 
@@ -45,7 +49,7 @@ class CardView(object):
         screen.blit(val_label, (model.x, model.y))
         screen.blit(suit_label, (model.x, model.y + game_constants.HEIGHTCARD * 2/3))
 
-class MoveController(object):
+class MoveController(object):       #The basic controller for our game.
     def __init__(self, models):
         self.models = models
 
@@ -53,7 +57,7 @@ class MoveController(object):
         if event.type == pygame.MOUSEBUTTONDOWN:
             for model in self.models:
                 if model.contains_pt(pygame.mouse.get_pos()):
-                    if model == deck:
+                    if model == deck:       #Important case checking if the deck size needs to be edited.
                         views.append(CardView(deck.cards_in_deck[len(deck.cards_in_deck)-1]))
                         controllers.append(MoveController([deck.cards_in_deck[len(deck.cards_in_deck)-1]]))
                         models.append(deck.cards_in_deck[len(deck.cards_in_deck)-1])
@@ -63,12 +67,16 @@ class MoveController(object):
         return False
 
 class GameRules(object):
+    """The rules that drive a normal game of Durak.
+
+        Attributes: turn, trump, num_Cards_Played
+    """
     def __init__(self, player_turn, deck_in):
         self.turn = player_turn      #player_turn is a boolean; True means player 1 is going False means player 2 is going.
         self.trump = deck_in.cards_in_deck[0].suit_label  #int of 0-3 definining the trump suit
         self.num_Cards_Played = 0
 
-    def playable_defense(self, field_card, hand_card):
+    def playable_defense(self, field_card, hand_card):      #Checks for the playability of a card on another card defensively.
         if not field.Card.played_over:
             self.num_cards_played += 1
             if field_card.suit == self.trump and hand_card.suit != self.trump:
@@ -90,7 +98,7 @@ class GameRules(object):
         else:
             return False
 
-    def playable_offense(self, hand_in, card_in):
+    def playable_offense(self, hand_in, card_in):           #Checks to see if a card can be played offensively.
         if num_cards_played < 1:
             num_cards_played += 1
             return True
@@ -102,11 +110,11 @@ class GameRules(object):
             else:
                 return False
 
-    def beat_turn(self):
+    def beat_turn(self):                    #Resets based on a successful defense.
         self.turn = not self.turn
         self.num_cards_played = 0
 
-    def lost_turn(self):
+    def lost_turn(self):                    #Resets based on a successful offense.
         self.num_cards_played = 0
 
 if __name__ == "__main__":

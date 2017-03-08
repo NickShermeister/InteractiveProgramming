@@ -1,3 +1,4 @@
+#This is vestigial code we may want to reference in the future.
 import card_def
 import card_game
 import deck_def

@@ -12,7 +12,7 @@ class Deck(object):
         Initializes and creates the deck. Deck is a shuffled list of card objects with suit and value numbers.
         '''
         self.deck_size = deck_size
-        self.card_attributes = {'suit':[0,1,2,3], 'number':[6,7,8,9,10,11,12,13,14]}
+        self.card_attributes = {'suit':[0,1,2,3], 'number':[6,7,8,9,10,11,12,13,14]}        #This is coded for Durak; a normal deck would be 1-13.
         self.cards_in_deck = []
         for s in self.card_attributes['suit']:
             for n in self.card_attributes['number']:
@@ -39,5 +39,7 @@ class Deck(object):
         return(random.shuffle(self.cards_in_deck))
 
     def play(self, x, y, hand):
+        """Gives a card to a hand and removes said card from itself.
+        """
         hand.draw(1, self)
         self.draw(1)

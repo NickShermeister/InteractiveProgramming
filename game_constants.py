@@ -1,3 +1,5 @@
+"""A file containing all constants in the game. 
+"""
 window_width = 800
 window_height = 600
 c_white = (255,255,255)

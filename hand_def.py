@@ -6,7 +6,7 @@ import game_constants
 class Hand(object):
     """Defines both player hand and AI hand
 
-    Attributes: cards"""
+    Attributes: cards_in_hand, cards_in_field"""
 
     def __init__(self, hand_size, deck, cards_in_hand = [], cards_in_field = []):
         self.cards_in_hand = cards_in_hand

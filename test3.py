@@ -1,4 +1,4 @@
-
+#Vestigial Code implemented in the game.
 import pygame
 
 BLACK = (0, 0, 0)

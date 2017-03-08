@@ -1,3 +1,4 @@
+#A very basic test to start learning pygame.
 import pygame
 
 pygame.init()
