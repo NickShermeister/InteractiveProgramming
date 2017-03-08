@@ -38,14 +38,17 @@ class Card(object):
                     print('\n',hand.cards_in_field)
                     hand.cards_in_field.append(self)
                     print('\n',hand.cards_in_field, '\n', '\n')
-            for c in hand.cards_in_hand:    #relocate and then redisplay the screen with updated location of cards.
-                c.x = (((game_constants.window_width * (5/8))/len(hand.cards_in_hand)) * hand.cards_in_hand.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
-            for c in hand.cards_in_field:
-                c.x = (game_constants.window_width * (5/48) * hand.cards_in_field.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
-            for c in hand.cards_in_opponent:
-                c.x = (((game_constants.window_width * (5/8))/len(hand.cards_in_hand)) * hand.cards_in_hand.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
         else:
-            pass
+            self.x = card_to_play_on.x
+            self.y = card_to_play_on.y + game_constants.HEIGHTCARD
+            hand.cards_in_hand.remove(self)
+            hand.cards_in_field.append(self)
+        for c in hand.cards_in_hand:    #relocate and then redisplay the screen with updated location of cards.
+            c.x = (((game_constants.window_width * (5/8))/len(hand.cards_in_hand)) * hand.cards_in_hand.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
+        for c in hand.cards_in_field:
+            c.x = (game_constants.window_width * (5/48) * hand.cards_in_field.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
+        for c in hand.cards_in_opponent:
+            c.x = (((game_constants.window_width * (5/8))/len(hand.cards_in_hand)) * hand.cards_in_hand.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
 
     def discard(self, hand, discardx = game_constants.window_width * (1/8), discardy = game_constants.window_height * (1/2)):
         #for animated discard, will be more applicable later
