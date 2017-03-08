@@ -24,7 +24,7 @@ class Card(object):
         return (0 < (pt[0] - self.x) < self.width) and (0 < (pt[1] - self.y) < self.height)
 
     def play(self, newx, newy, hand, card_to_play_on = None):
-        if card_to_play_on is not None:
+        if card_to_play_on is None:
             if not self.discarded:
                 if self.played:             #A way to tell if the card is in the field; if so, discard it.
                     self.discard(hand)
