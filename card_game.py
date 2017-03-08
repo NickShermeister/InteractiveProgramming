@@ -61,7 +61,10 @@ class MoveController(object):       #The basic controller for our game.
                         views.append(CardView(deck.cards_in_deck[len(deck.cards_in_deck)-1]))
                         controllers.append(MoveController([deck.cards_in_deck[len(deck.cards_in_deck)-1]]))
                         models.append(deck.cards_in_deck[len(deck.cards_in_deck)-1])
-                    model.play(model.x, model.y - game_constants.window_height * (1/6), hand)
+                    if not model.opponent:
+                        model.play(model.x, model.y - game_constants.window_height * (1/6), hand)
+                    else:
+                        model.play(model.x, model.y + game_constants.window_height * (1/6), hand)
                     print("Here again.")
                     return True
         return False
@@ -111,6 +114,9 @@ class GameRules(object):
             else:
                 return False
 
+    def play_card(self, field_card, play_card, hand):
+        play_card.play(field_card.x, field_card.x + int(game_constants.HEIGHTCARD), hand)
+
     def beat_turn(self):                    #Resets based on a successful defense.
         self.turn = not self.turn
         self.num_cards_played = 0
@@ -123,7 +129,7 @@ class GameRules(object):
         if self.beat == True:
             pass #TODO: Implement
         else:
-
+            pass
 
 
 if __name__ == "__main__":

@@ -6,15 +6,17 @@ import game_constants
 class Hand(object):
     """Defines both player hand and AI hand
 
+    Has morphed into a field definition of some sort over time.
+
     Attributes: cards_in_hand, cards_in_field, turn"""
 
-    def __init__(self, hand_size, deck, cards_in_hand = [], cards_in_field = [], cards_in_opponent):
+    def __init__(self, hand_size, deck, cards_in_hand = [], cards_in_field = [], cards_in_opponent = []):
         self.cards_in_hand = cards_in_hand
         self.cards_in_field = cards_in_field
         self.cards_in_opponent = cards_in_opponent
         self.draw(hand_size, deck)
         deck.draw(hand_size)
-        self.turn = False
+        self.turn = False  #Is set to True if it is the player's turn.
 
     def draw(self, number_of_cards, deck):
         self.number_of_cards = number_of_cards
