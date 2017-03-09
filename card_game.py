@@ -70,7 +70,6 @@ class CardView(object):
 
 class MoveController(object):
     """The basic controller for our game.
-
     Attributes: models, dragging"""
     def __init__(self, models):
         self.models = models
@@ -202,6 +201,10 @@ class GameRules(object):
             card.discard(hands)
         for card in hands.player2_field:
             card.discard(hands)
+        if len(hands.cards_in_hand) < 6:
+            pass
+        if len(hands.cards_in_opponent) < 6:
+            pass
         for c in hand.cards_in_hand:    #relocate and then redisplay the screen with updated location of cards.
             c.x = (((game_constants.window_width * (5/8))/len(hand.cards_in_hand)) * hand.cards_in_hand.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
             c.y = game_constants.window_height * (2/3)

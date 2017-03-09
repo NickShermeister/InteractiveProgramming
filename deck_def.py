@@ -44,5 +44,9 @@ class Deck(object):
     def play(self, hand):
         """Gives a card to a hand and removes said card from itself.
         """
-        hand.draw(1, self)
-        self.draw(1)
+        amt = 6 - len(hand.cards_in_hand)
+        hand.draw(self)
+        self.draw(amt)
+        amt = 6 - len(hand.cards_in_opponent)
+        hand.opponent_draw(self)
+        self.draw(amt)
