@@ -17,7 +17,7 @@ class AI(object):
     For the current mode, there will be no card counting and the AI will always play its lowest valued card that it can play. It has a chance of playing Trump, based on the value of the trump."""
 
     def __init__(self):
-        self.difficulty = easy
+        self.difficulty = 'easy'
         self.playing = True
 
     def play_cards(self, hands, rule_book):
@@ -34,7 +34,14 @@ class AI(object):
             else:
                 rule_book.play(1)
         else:
-            pass
+            while playing:
+                temp_card = find_lowest_playable_card(hands, rule_book, card)
+                if temp_card is not None:
+                    temp_card.play(-1, -1, hands)
+                else:
+                    rule_book.play(2)
+                time.sleep(2)
+                playing = not rule_book.turn
 
     def find_lowest_playable_card(self, hand, rule_book, cards_on = None):
         lowval = 15
