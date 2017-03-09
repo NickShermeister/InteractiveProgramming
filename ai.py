@@ -18,19 +18,29 @@ class AI(object):
     def __init__(self):
         self.difficulty = easy
 
-    def play_card(self, hands, rule_book):
-        if not rule_book.turn:
+    def play_cards(self, hands, rule_book):
+        if rule_book.turn:
+            for card in hands.player1_field:
+                temp_card = find_lowest_playable_card(hands, rule_book, card)
+                if temp_card is not None:
+                    temp_card.play(-1, -1, hands, card)
+            if len(hands.player1_field) > len(hands.player2_field): #player 1's turn
+                rule_book.play(2)    #TODO: implement AI pick up cards
+            else:
+                rule_book.play(1)
+        else:
             pass
 
-    def find_lowest_playable_card(self, hand, rule_book, card_on = None):
+    def find_lowest_playable_card(self, hand, rule_book, cards_on = None):
         lowval = 15
+        tempcard = None
         if not rule_book.turn:
             for card in hand.cards_in_opponent:
                 if rule_book.playable_defense(card, card_on):
-                    if card.value < lowval && card.suit != rule_book.trump:
+                    if card.value < lowval and card.suit != rule_book.trump:
                         lowval = card.value
                         tempcard = card
-                    elif card.value < lowval && lowval > 14:
+                    elif card.value < lowval and lowval > 14:
                         lowval = card.value
                         tempcard = card
         else:
