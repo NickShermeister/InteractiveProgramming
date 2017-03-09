@@ -28,7 +28,7 @@ class Card(object):
         self.y = newy
 
     def play(self, newx, newy, hand, card_to_play_on = None):
-        if self not in hand.cards_in_opponent:
+        if self.opponent == 0:
             if card_to_play_on is None:
                 if not self.discarded:
                     if self.played:             #A way to tell if the card is in the field; if so, discard it.
@@ -37,8 +37,9 @@ class Card(object):
                         self.x = newx
                         self.y = newy
                         self.played = True
-                        hand.cards_in_hand.remove(self)
-                        hand.player1_field.append(self)
+                        if self in hand.cards_in_hand:
+                            hand.cards_in_hand.remove(self)
+                            hand.player1_field.append(self)
             else:
                 self.x = card_to_play_on.x
                 self.y = card_to_play_on.y + game_constants.HEIGHTCARD
@@ -78,7 +79,8 @@ class Card(object):
         self.x = discardx
         self.y = discardy
         self.discarded = True
-        hand.player1_field.remove(self)
+        if self in hand.player1_field:
+            hand.player1_field.remove(self)
 
     #def __str__(self):
     #    return("%d of %s" % self.value, self.suit)

@@ -26,6 +26,7 @@ class AI(object):
             temp_card = self.find_lowest_playable_card(hands, rule_book, hands.player1_field[-1])
             if temp_card is not None:
                 temp_card.play(-1, -1, hands, hands.player1_field[-1])
+                temp_card.opponent = False
                 playing = rule_book.turn
             if len(hands.player1_field) > len(hands.player2_field): #player 1's turn
                 rule_book.play(2)
@@ -33,7 +34,8 @@ class AI(object):
                 pass
                 #rule_book.play(1)
         else:
-            temp_card = self.find_lowest_playable_card(hands, rule_book, card)
+            print('my turn')
+            temp_card = self.find_lowest_playable_card(hands, rule_book)
             if temp_card is not None:
                 temp_card.play(-1, -1, hands)
             else:
@@ -44,10 +46,8 @@ class AI(object):
         i = len(hand.player1_field)-1
         lowval = 15
         tempcard = None
-        print(rule_book.turn)
         if rule_book.turn:
             for card in hand.cards_in_opponent:
-                print(rule_book.playable_defense(hand.player1_field[i], card))
                 if rule_book.playable_defense(hand.player1_field[i], card):
                     if card.value < lowval and card.suit != rule_book.trump and card.value>hand.player1_field[i].value and card.suit==hand.player1_field[i].suit:
                         lowval = card.value

@@ -88,9 +88,8 @@ class MoveController(object):       #The basic controller for our game.
             if self.dragging != None and game_rules.turn == True:
                 if self.dragging.y < game_constants.window_height * (1/2) + game_constants.HEIGHTCARD:
                     if not self.dragging.opponent:
-                        self.dragging.play(self.dragging.x, game_constants.window_height * (1/2), hand)
+                        self.dragging.play(self.dragging.x, game_constants.window_height * (3/8) + game_constants.HEIGHTCARD/2, hand)
                         bot.play_cards(hand, game_rules)
-                        print(len(hand.player2_field))
                     else:
                         self.dragging.play(self.dragging.x, game_constants.window_height * (7/20), hand)
                 else:
@@ -101,7 +100,8 @@ class MoveController(object):       #The basic controller for our game.
                 played_on = False
                 for c in hand.player2_field:
                     if c.contains_pt(pygame.mouse.get_pos()):
-                        self.dragging.play(c.x, c.y + game_constants.HEIGHTCARD/2, hand)
+                        self.dragging.play(c.x, c.y - game_constants.HEIGHTCARD, hand)
+                        bot.play_cards(hand, game_rules)
                         played_on = True
                 if played_on == False:
                     for c in hand.cards_in_hand:    #relocate and then redisplay the screen with updated location of cards.
@@ -205,6 +205,7 @@ class GameRules(object):
                     for c in hand.player1_field + hand.player2_field:
                         c.play(self.x, self.y, hand)
                     self.turn = False
+                    bot.play_cards(hand, game_rules)
                     return
                 if self.turn == False:
                     for c in hand.player1_field + hand.player2_field:
@@ -219,7 +220,7 @@ class GameRules(object):
                 if self.turn == True:
                     for c in hand.player1_field + hand.player2_field:
                         hand.cards_in_opponent.append(c)
-                    self.turn = False
+            print(self.turn)
         else:
             print("You can't do that yet")
 
@@ -254,7 +255,6 @@ if __name__ == "__main__":
 
     running = True
     deckalive = True
-    print(hand.cards_in_opponent)
     while running:
         pygame.display.update()
         clock.tick(game_constants.fps)
