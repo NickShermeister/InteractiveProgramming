@@ -86,10 +86,10 @@ class Card(object):
             hand.player1_field.remove(self)
         if self in hand.player2_field:
             hand.player2_field.remove(self)
-        if self in hand.cards_in_hand:
+        '''if self in hand.cards_in_hand:
             hand.cards_in_hand.remove(self)
         if self in hand.cards_in_opponent:
-            hand.cards_in_opponent.remove(self)
+            hand.cards_in_opponent.remove(self)'''
 
     #def __str__(self):
     #    return("%d of %s" % self.value, self.suit)

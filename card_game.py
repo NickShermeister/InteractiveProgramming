@@ -75,7 +75,7 @@ class MoveController(object):
         self.models = models
         self.dragging = None
 
-    def handle_event(self, event):
+    def handle_event(self, event, game_rules):
         if event.type == pygame.MOUSEBUTTONDOWN:
             for model in self.models:
                 if model.contains_pt(pygame.mouse.get_pos()):
@@ -96,8 +96,13 @@ class MoveController(object):
             if self.dragging != None and game_rules.turn == True:
                 if self.dragging.y < game_constants.window_height * (1/2) + game_constants.HEIGHTCARD:
                     if not self.dragging.opponent:
-                        self.dragging.play(self.dragging.x, game_constants.window_height * (3/8) + game_constants.HEIGHTCARD/2, hand)
-                        bot.play_cards(hand, deck, game_rules)
+                        if any(self.dragging.value == c.value for c in hand.player1_field + hand.player2_field) or len(hand.player1_field + hand.player2_field) == 0:
+                            self.dragging.play(self.dragging.x, game_constants.window_height * (3/8) + game_constants.HEIGHTCARD/2, hand)
+                            bot.play_cards(hand, deck, game_rules)
+                        else:
+                            for c in hand.cards_in_hand:    #relocate and then redisplay the screen with updated location of cards.
+                                c.x = (((game_constants.window_width * (5/8))/len(hand.cards_in_hand)) * hand.cards_in_hand.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
+                                c.y = game_constants.window_height * (2/3)
                     else:
                         self.dragging.play(self.dragging.x, game_constants.window_height * (7/20), hand)
                 else:
@@ -107,10 +112,19 @@ class MoveController(object):
             if self.dragging != None and game_rules.turn == False:
                 played_on = False
                 for c in hand.player2_field:
-                    if c.contains_pt(pygame.mouse.get_pos()):
-                        self.dragging.play(c.x, c.y - game_constants.HEIGHTCARD, hand)
-                        bot.play_cards(hand, deck, game_rules)
+                    do_it = False
+                    if c.contains_pt(pygame.mouse.get_pos()) and game_rules.playable_defense(c, self.dragging):
                         played_on = True
+                        self.dragging.play(c.x, c.y - game_constants.HEIGHTCARD, hand, c)
+                        for i in hand.cards_in_opponent:
+                            if any(i.value == c.value for c in hand.player1_field + hand.player2_field):
+                                i.opponent = True
+                                i.play(-1, game_constants.window_height * (1/2), hand)
+                                do_it = True
+                                break
+                        if do_it == False:
+                            print('yes')
+                            bot.play_cards(hand, deck, game_rules)
                 if played_on == False:
                     for c in hand.cards_in_hand:    #relocate and then redisplay the screen with updated location of cards.
                         c.x = (((game_constants.window_width * (5/8))/len(hand.cards_in_hand)) * hand.cards_in_hand.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
@@ -158,7 +172,6 @@ class GameRules(object):
             return False
 
     def playable_offense(self, hand_in, card_in):         #Checks to see if a card can be played offensively.
-        print(self.num_cards_played)
         if self.num_cards_played < 1:
             self.num_cards_played += 1
             return True
@@ -178,7 +191,6 @@ class GameRules(object):
                     card.opponent = True
                     hands.cards_in_opponent.append(card)
             else:
-                self.num_cards_played = 0
                 for card in hands.player1_field + hands.player2_field:
                     card.opponent = False
                     hands.cards_in_hand.append(card)
@@ -212,7 +224,6 @@ class GameRules(object):
         for c in hand.player2_field:
             c.x = (game_constants.window_width * (5/48) * hand.player2_field.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
             c.y = game_constants.window_height * (1/2) - game_constants.HEIGHTCARD
-        print(self.turn)
 
     def contains_pt(self, pt):      #Returns True if a point is where the card is displayed; False otherwise.
         return (0 < (pt[0] - self.x) < self.width) and (0 < (pt[1] - self.y) < self.height)
@@ -222,8 +233,8 @@ class GameRules(object):
             if player == 1:
                 if won == 0:
                     for c in (hand.player1_field + hand.player2_field):
+                        c.opponent = False
                         hand.cards_in_hand.append(c)
-                    #self.cleanup(hand, deck, 0)
                     bot.play_cards(hand, deck, game_rules)
                 else:
                     self.turn = False
@@ -233,6 +244,7 @@ class GameRules(object):
             if player == 2:
                 if won == 0:
                     for c in (hand.player1_field + hand.player2_field):
+                        c.opponent = True
                         hand.cards_in_opponent.append(c)
                     self.cleanup(hand, deck, 0)
                 else:
@@ -278,7 +290,7 @@ if __name__ == "__main__":
         screen.fill(game_constants.c_black)
         for event in pygame.event.get():
             for cont in controllers:
-                if cont.handle_event(event):
+                if cont.handle_event(event, game_rules):
                     break
             if event.type == pygame.QUIT:
                 running = False
