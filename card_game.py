@@ -302,5 +302,11 @@ if __name__ == "__main__":
                 controllers = controllers[2:]
                 models = models[2:]
                 deckalive = False
+        if len(hand.cards_in_opponent) == 0 and len(deck.cards_in_deck) == 0:
+            print("You Lose!")
+            pygame.quit()
+        if len(hand.cards_in_hand) == 0 and len(deck.cards_in_deck) == 0:
+            print("You Win!")
+            pygame.quit()
 
     pygame.quit()
