@@ -44,14 +44,11 @@ class AI(object):
         i = len(hand.player1_field)-1
         lowval = 15
         tempcard = None
-        print("hi")
         print(rule_book.turn)
         if rule_book.turn:
             for card in hand.cards_in_opponent:
-                print("one")
                 print(rule_book.playable_defense(hand.player1_field[i], card))
                 if rule_book.playable_defense(hand.player1_field[i], card):
-                    print("here")
                     if card.value < lowval and card.suit != rule_book.trump and card.value>hand.player1_field[i].value and card.suit==hand.player1_field[i].suit:
                         lowval = card.value
                         tempcard = card

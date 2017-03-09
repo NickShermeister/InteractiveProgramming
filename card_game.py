@@ -157,7 +157,7 @@ class GameRules(object):
         elif num_cards_played >= game_constants.max_cards_played:
             return False
         else:
-            if card_in.value in hand_in.player1_field:
+            if (card_in.value in hand_in.player1_field) or (card_in.value in hand_in.player2_field):
                 return True
             else:
                 return False
