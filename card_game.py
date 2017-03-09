@@ -157,7 +157,8 @@ class GameRules(object):
         else:
             return False
 
-    def playable_offense(self, hand_in, card_in):           #Checks to see if a card can be played offensively.
+    def playable_offense(self, hand_in, card_in):         #Checks to see if a card can be played offensively.
+        print(self.num_cards_played)
         if self.num_cards_played < 1:
             self.num_cards_played += 1
             return True
@@ -165,6 +166,7 @@ class GameRules(object):
             return False
         else:
             if (card_in.value in hand_in.player1_field) or (card_in.value in hand_in.player2_field):
+                self.num_cards_played += 1
                 return True
             else:
                 return False
@@ -222,6 +224,7 @@ class GameRules(object):
         for c in hand.player2_field:
             c.x = (game_constants.window_width * (5/48) * hand.player2_field.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
             c.y = game_constants.window_height * (1/2) - game_constants.HEIGHTCARD
+            print(self.turn)
 
     def contains_pt(self, pt):      #Returns True if a point is where the card is displayed; False otherwise.
         return (0 < (pt[0] - self.x) < self.width) and (0 < (pt[1] - self.y) < self.height)
@@ -236,23 +239,9 @@ class GameRules(object):
                     bot.play_cards(hand, deck, game_rules)
                 else:
                     self.turn = False
+                    self.num_cards_played = 0
                     self.cleanup(hand, deck, 1)
                     bot.play_cards(hand, deck, game_rules)
-                '''if self.turn == True:
-                    for c in hand.player1_field + hand.player2_field:
-                        c.play(self.x, self.y, hand)
-                    self.turn = False
-                    bot.play_cards(hand, game_rules)
-                    self.beat_turn()
-                    self.cleanup(hand, deck)
-                    return
-                if self.turn == False:
-                    for c in hand.player1_field + hand.player2_field:
-                        hand.cards_in_hand.append(c)
-                        print(len(hand.cards_in_hand))
-                    self.turn = True
-                    self.lost_turn()
-                    self.cleanup(hand, deck)'''
             if player == 2:
                 if won == 0:
                     for c in (hand.player1_field + hand.player2_field):
@@ -260,19 +249,8 @@ class GameRules(object):
                     self.cleanup(hand, deck, 0)
                 else:
                     self.turn = True
+                    self.num_cards_played = 0
                     self.cleanup(hand, deck, 1)
-                '''if self.turn == False:
-                    for c in hand.player1_field + hand.player2_field:
-                        c.play(self.x, self.y, hand)
-                    self.turn = True
-                    print('hi')
-                    self.cleanup(hand, deck)
-                    return
-                if self.turn == True:
-                    for c in hand.player1_field + hand.player2_field:
-                        hand.cards_in_opponent.append(c)
-                    self.turn = False
-                    self.cleanup(hand, deck)'''
         else:
             print("You can't do that yet")
 
