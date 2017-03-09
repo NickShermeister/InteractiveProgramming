@@ -92,8 +92,6 @@ class MoveController(object):
                     if model != deck and model != game_rules:
                         if model in hand.cards_in_hand:
                             self.dragging = model
-                        # else:
-                        #     model.play(model.x, model.y, hand)
         if event.type == pygame.MOUSEBUTTONUP:
             if self.dragging != None and game_rules.turn == True:
                 if self.dragging.y < game_constants.window_height * (1/2) + game_constants.HEIGHTCARD:
@@ -160,11 +158,10 @@ class GameRules(object):
             return False
 
     def playable_offense(self, hand_in, card_in):           #Checks to see if a card can be played offensively.
-        num_cards_played = 0
-        if num_cards_played < 1:
-            num_cards_played += 1
+        if self.num_cards_played < 1:
+            self.num_cards_played += 1
             return True
-        elif num_cards_played >= game_constants.max_cards_played:
+        elif self.num_cards_played >= game_constants.max_cards_played:
             return False
         else:
             if (card_in.value in hand_in.player1_field) or (card_in.value in hand_in.player2_field):
@@ -191,6 +188,7 @@ class GameRules(object):
                     card.opponent = True
                     hands.cards_in_opponent.append(card)
             else:
+                self.num_cards_played = 0
                 for card in hands.player1_field + hands.player2_field:
                     card.opponent = False
                     hands.cards_in_hand.append(card)
@@ -234,12 +232,12 @@ class GameRules(object):
                 if won == 0:
                     for c in (hand.player1_field + hand.player2_field):
                         hand.cards_in_hand.append(c)
-                    bot.play_cards(hand, deck, game_rules)
                     self.cleanup(hand, deck, 0)
+                    bot.play_cards(hand, deck, game_rules)
                 else:
                     self.turn = False
-                    bot.play_cards(hand, deck, game_rules)
                     self.cleanup(hand, deck, 1)
+                    bot.play_cards(hand, deck, game_rules)
                 '''if self.turn == True:
                     for c in hand.player1_field + hand.player2_field:
                         c.play(self.x, self.y, hand)

@@ -74,5 +74,5 @@ class AI(object):
                         lowval = card.value
                         tempcard = card
             if tempcard == None:
-                tempcard = hand.cards_in_opponent(random.randint(len(hand.cards_in_opponent)))
+                tempcard = hand.cards_in_opponent[random.randint(0, len(hand.cards_in_opponent))]
         return tempcard
