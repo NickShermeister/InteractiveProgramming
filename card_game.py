@@ -92,8 +92,6 @@ class MoveController(object):
                     if model != deck and model != game_rules:
                         if model in hand.cards_in_hand:
                             self.dragging = model
-                        else:
-                            model.play(model.x, model.y, hand)
         if event.type == pygame.MOUSEBUTTONUP:
             if self.dragging != None and game_rules.turn == True:
                 if self.dragging.y < game_constants.window_height * (1/2) + game_constants.HEIGHTCARD:
@@ -238,12 +236,12 @@ class GameRules(object):
                 if won == 0:
                     for c in (hand.player1_field + hand.player2_field):
                         hand.cards_in_hand.append(c)
-                    bot.play_cards(hand, deck, game_rules)
                     self.cleanup(hand, deck, 0)
+                    bot.play_cards(hand, deck, game_rules)
                 else:
                     self.turn = False
-                    bot.play_cards(hand, deck, game_rules)
                     self.cleanup(hand, deck, 1)
+                    bot.play_cards(hand, deck, game_rules)
                 '''if self.turn == True:
                     for c in hand.player1_field + hand.player2_field:
                         c.play(self.x, self.y, hand)
