@@ -21,26 +21,34 @@ class AI(object):
         self.difficulty = 'easy'
         self.playing = True
 
-    def play_cards(self, hands, rule_book):
-        playing = rule_book.turn
+    def play_cards(self, hands, deck, rule_book):
         if rule_book.turn:
             temp_card = self.find_lowest_playable_card(hands, rule_book, hands.player1_field[-1])
             if temp_card is not None:
                 temp_card.play(-1, -1, hands, hands.player1_field[-1])
                 temp_card.opponent = False
-                playing = rule_book.turn
             if len(hands.player1_field) > len(hands.player2_field): #player 1's turn
-                rule_book.play(2)
+                rule_book.play(2, 0)
             else:
                 pass
                 #rule_book.play(1)
         else:
             temp_card = self.find_lowest_playable_card(hands, rule_book)
             if temp_card is not None:
-                temp_card.play(-1, -1, hands)
+                rule_book.cleanup(hands, deck, 1)
+                temp_card.play(-1, game_constants.window_height * (1/2), hands)
+                print(temp_card.x)
+                print(temp_card.y)
+                print(len(hands.player2_field))
+                for c in hands.player2_field:
+                    c.x = (game_constants.window_width * (5/48) * hands.player2_field.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
+                    c.y = game_constants.window_height * (1/2) - game_constants.HEIGHTCARD
+                    print(c.suit)
+                    print(c.value)
+                    print(game_constants.window_width * (1/8))
+                    print(game_constants.window_height * (1/2))
             else:
-                rule_book.play(2)
-            playing = not rule_book.turn
+                rule_book.play(2, 1)
 
     def find_lowest_playable_card(self, hand, rule_book, cards_on = None):
         i = len(hand.player1_field)-1
@@ -62,5 +70,5 @@ class AI(object):
                         lowval = card.value
                         tempcard = card
             if tempcard == None:
-                tempcard = hand.cards_in_opponent(random.rand(len(hand.cards_in_opponent)))
+                tempcard = hand.cards_in_opponent(random.randint(len(hand.cards_in_opponent)))
         return tempcard
