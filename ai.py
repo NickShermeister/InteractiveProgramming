@@ -22,25 +22,25 @@ class AI(object):
         self.playing = True
 
     def play_cards(self, hands, rule_book):
-        playing = rule_book.turn
+        self.playing = rule_book.turn
         if rule_book.turn:
-            temp_card = self.find_lowest_playable_card(hands, rule_book, hands.player1_field[-1])
-            if temp_card is not None:
-                temp_card.play(-1, -1, hands, hands.player1_field[-1])
-                temp_card.opponent = False
-                playing = rule_book.turn
-            if len(hands.player1_field) > len(hands.player2_field): #player 1's turn
-                rule_book.play(2)
-            else:
-                pass
-                #rule_book.play(1)
+            if len(hands.player1_field)> 0:
+                temp_card = self.find_lowest_playable_card(hands, rule_book, hands.player1_field[-1])
+                if temp_card is not None:
+                    temp_card.play(-1, -1, hands, hands.player1_field[-1])
+                    temp_card.opponent = False
+                    playing = rule_book.turn
+                if len(hands.player1_field) > len(hands.player2_field):
+                    rule_book.play(2)
+                else:
+                    pass
         else:
             temp_card = self.find_lowest_playable_card(hands, rule_book)
             if temp_card is not None:
-                temp_card.play(-1, -1, hands)
-            else:
-                rule_book.play(2)
-            playing = not rule_book.turn
+                temp_card.play(200, 200, hands)
+            # else:
+            #     rule_book.play(1)
+            #playing = not rule_book.turn
 
     def find_lowest_playable_card(self, hand, rule_book, cards_on = None):
         i = len(hand.player1_field)-1
@@ -61,6 +61,6 @@ class AI(object):
                     if card.value < lowval:
                         lowval = card.value
                         tempcard = card
-            if tempcard == None:
-                tempcard = hand.cards_in_opponent(random.rand(len(hand.cards_in_opponent)))
+            # if tempcard == None:
+            #     tempcard = hand.cards_in_opponent(random.rand(len(hand.cards_in_opponent)))
         return tempcard
