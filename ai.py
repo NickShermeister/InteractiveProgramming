@@ -33,12 +33,13 @@ class AI(object):
                 pass
                 #rule_book.play(1)
         else:
-            temp_card = self.find_lowest_playable_card(hands, rule_book)
-            if temp_card is not None:
-                temp_card.play(-1, game_constants.window_height * (1/2), hands)
-                for c in hands.player2_field:
-                    c.x = (game_constants.window_width * (5/48) * hands.player2_field.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
-                    c.y = game_constants.window_height * (1/2) - game_constants.HEIGHTCARD
+            if len(hands.cards_in_opponent) > 0:
+                temp_card = self.find_lowest_playable_card(hands, rule_book)
+                temp_card.opponent = True
+                if temp_card is not None:
+                    temp_card.play(-1, game_constants.window_height * (1/2), hands)
+                else:
+                    rule_book.play(2, 1)
             else:
                 rule_book.play(2, 1)
 
@@ -62,8 +63,5 @@ class AI(object):
                         lowval = card.value
                         tempcard = card
             if tempcard == None:
-                if len(hand.cards_in_opponent) > 0 and len(hand.cards_in_opponent) > 5:
-                    tempcard = hand.cards_in_opponent[random.randint(0, len(hand.cards_in_opponent))-1]
-                else:
-                    tempcard = None
+                tempcard = hand.cards_in_opponent[random.randint(0, len(hand.cards_in_opponent))-1]
         return tempcard

@@ -123,7 +123,6 @@ class MoveController(object):
                                 do_it = True
                                 break
                         if do_it == False:
-                            print('yes')
                             bot.play_cards(hand, deck, game_rules)
                 if played_on == False:
                     for c in hand.cards_in_hand:    #relocate and then redisplay the screen with updated location of cards.
@@ -214,7 +213,7 @@ class GameRules(object):
             models.append(c)
         for c in hand.player1_field:
             c.x = (game_constants.window_width * (5/48) * hand.player1_field.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
-            c.y = game_constants.window_height * (2/3)
+            c.y = game_constants.window_height * (2/3) - game_constants.HEIGHTCARD/2
         for c in hand.cards_in_opponent:
             c.x = (((game_constants.window_width * (5/8))/len(hand.cards_in_opponent)) * hand.cards_in_opponent.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
             c.y = 75
@@ -232,9 +231,16 @@ class GameRules(object):
         if len(hand.player1_field + hand.player2_field) > 0:
             if player == 1:
                 if won == 0:
-                    for c in (hand.player1_field + hand.player2_field):
+                    self.cleanup(hand, deck, 0)
+                    '''for c in (hand.player1_field + hand.player2_field):
                         c.opponent = False
                         hand.cards_in_hand.append(c)
+                        if c in hand.player1_field:
+                            hand.player1_field.remove(c)
+                        if c in hand.player2_field:
+                            hand.player2_field.remove(c)
+                    for c in hand.cards_in_hand:
+                        c.y = game_constants.window_height * (2/3)'''
                     bot.play_cards(hand, deck, game_rules)
                 else:
                     self.turn = False
@@ -243,13 +249,12 @@ class GameRules(object):
                     bot.play_cards(hand, deck, game_rules)
             if player == 2:
                 if won == 0:
-                    for c in (hand.player1_field + hand.player2_field):
+                    '''for c in (hand.player1_field + hand.player2_field):
                         c.opponent = True
-                        hand.cards_in_opponent.append(c)
+                        hand.cards_in_opponent.append(c)'''
                     self.cleanup(hand, deck, 0)
                 else:
                     self.turn = True
-                    self.num_cards_played = 0
                     self.cleanup(hand, deck, 1)
         else:
             print("You can't do that yet")
@@ -302,11 +307,12 @@ if __name__ == "__main__":
                 controllers = controllers[2:]
                 models = models[2:]
                 deckalive = False
-        if len(hand.cards_in_opponent) == 0 and len(deck.cards_in_deck) == 0:
-            print("You Lose!")
-            pygame.quit()
-        if len(hand.cards_in_hand) == 0 and len(deck.cards_in_deck) == 0:
-            print("You Win!")
-            pygame.quit()
+        if len(deck.cards_in_deck) == 0:
+            if len(hand.cards_in_opponent) == 0:
+                print("You Lose!")
+                pygame.quit()
+            if len(hand.cards_in_hand) == 0:
+                print("You Win!")
+                pygame.quit()
 
     pygame.quit()
