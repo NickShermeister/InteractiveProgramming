@@ -55,7 +55,7 @@ class AI(object):
                     if card.value < lowval and card.suit != rule_book.trump and card.value>hand.player1_field[i].value and card.suit==hand.player1_field[i].suit:
                         lowval = card.value
                         tempcard = card
-                    elif card.value < lowval and card.suit == rule_book.trump and lowval > 14 and card.value>hand.player1_field[i].value:
+                    elif card.value < lowval and card.suit == rule_book.trump and card.value>hand.player1_field[i].value:
                         lowval = card.value
                         tempcard = card
         else:
