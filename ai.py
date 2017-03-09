@@ -21,27 +21,24 @@ class AI(object):
         self.playing = True
 
     def play_cards(self, hands, rule_book):
+        playing = rule_book.turn
         if rule_book.turn:
-            while playing:
-                for card in hands.player1_field:
-                    temp_card = find_lowest_playable_card(hands, rule_book, card)
-                    if temp_card is not None:
-                        temp_card.play(-1, -1, hands, card)
-                time.sleep(1)
+            temp_card = self.find_lowest_playable_card(hands, rule_book, hands.player1_field[-1])
+            if temp_card is not None:
+                temp_card.play(-1, -1, hands, hands.player1_field[-1])
                 playing = rule_book.turn
             if len(hands.player1_field) > len(hands.player2_field): #player 1's turn
                 rule_book.play(2)    
             else:
-                rule_book.play(1)
+                pass
+                #rule_book.play(1)
         else:
-            while playing:
-                temp_card = find_lowest_playable_card(hands, rule_book, card)
-                if temp_card is not None:
-                    temp_card.play(-1, -1, hands)
-                else:
-                    rule_book.play(2)
-                time.sleep(2)
-                playing = not rule_book.turn
+            temp_card = self.find_lowest_playable_card(hands, rule_book, card)
+            if temp_card is not None:
+                temp_card.play(-1, -1, hands)
+            else:
+                rule_book.play(2)
+            playing = not rule_book.turn
 
     def find_lowest_playable_card(self, hand, rule_book, cards_on = None):
         lowval = 15
@@ -57,7 +54,7 @@ class AI(object):
                         tempcard = card
         else:
             for card in hand.cards_in_opponent:
-                if rule_book.playable_offense(card):
+                if rule_book.playable_offense(hand, card):
                     if card.value < lowval:
                         lowval = card.value
                         tempcard = card

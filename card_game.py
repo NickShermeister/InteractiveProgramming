@@ -5,6 +5,7 @@ import hand_def
 import game_constants
 import pygame
 import sys
+import ai
 from pygame.locals import *
 
 """The python code that everything runs from."""
@@ -88,6 +89,8 @@ class MoveController(object):       #The basic controller for our game.
                 if self.dragging.y < game_constants.window_height * (1/2) + game_constants.HEIGHTCARD:
                     if not self.dragging.opponent:
                         self.dragging.play(self.dragging.x, game_constants.window_height * (1/2), hand)
+                        bot.play_cards(hand, game_rules)
+                        print(len(hand.player2_field))
                     else:
                         self.dragging.play(self.dragging.x, game_constants.window_height * (7/20), hand)
                 else:
@@ -147,6 +150,7 @@ class GameRules(object):
             return False
 
     def playable_offense(self, hand_in, card_in):           #Checks to see if a card can be played offensively.
+        num_cards_played = 0
         if num_cards_played < 1:
             num_cards_played += 1
             return True
@@ -227,6 +231,7 @@ if __name__ == "__main__":
     deck = deck_def.Deck(36)
     hand = hand_def.Hand(game_constants.starting_hand_size, deck)
     game_rules = GameRules(True, deck)
+    bot = ai.AI()
 
     pygame.display.set_caption('DURAK')
     clock = pygame.time.Clock()
