@@ -182,6 +182,7 @@ class GameRules(object):
         self.beat = False
 
     def cleanup(self, hands, deck):         #Cleans up the playing field after a turn.
+        print(self.turn)
         if self.beat == False:
             if self.turn:
                 for card in hands.player1_field:
@@ -223,8 +224,9 @@ class GameRules(object):
         if len(hand.player1_field + hand.player2_field) > 0:
             if player == 1:
                 if self.turn == True:
-                    '''for c in hand.player1_field + hand.player2_field:
-                        c.play(self.x, self.y, hand)'''
+                    for c in hand.player1_field + hand.player2_field:
+                        c.play(self.x, self.y, hand)
+                        print('hi')
                     self.turn = False
                     bot.play_cards(hand, game_rules)
                     self.beat_turn()
@@ -233,6 +235,8 @@ class GameRules(object):
                 if self.turn == False:
                     for c in hand.player1_field + hand.player2_field:
                         hand.cards_in_hand.append(c)
+                        print('hi')
+                        print(len(hand.cards_in_hand))
                     self.turn = True
                     self.lost_turn()
                     self.cleanup(hand, deck)
@@ -241,14 +245,12 @@ class GameRules(object):
                     for c in hand.player1_field + hand.player2_field:
                         c.play(self.x, self.y, hand)
                     self.turn = True
-                    self.beat_turn()
                     self.cleanup(hand, deck)
                     return
                 if self.turn == True:
                     for c in hand.player1_field + hand.player2_field:
                         hand.cards_in_opponent.append(c)
                     self.turn = False
-                    self.lost_turn()
                     self.cleanup(hand, deck)
             print(self.turn)
         else:

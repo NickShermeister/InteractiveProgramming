@@ -7,6 +7,7 @@ import pygame
 import card_game
 import sys
 import time
+import random
 from pygame.locals import *
 
 class AI(object):
@@ -34,7 +35,6 @@ class AI(object):
                 pass
                 #rule_book.play(1)
         else:
-            print('my turn')
             temp_card = self.find_lowest_playable_card(hands, rule_book)
             if temp_card is not None:
                 temp_card.play(-1, -1, hands)
@@ -61,4 +61,6 @@ class AI(object):
                     if card.value < lowval:
                         lowval = card.value
                         tempcard = card
+            if tempcard == None:
+                tempcard = hand.cards_in_opponent(random.rand(len(hand.cards_in_opponent)))
         return tempcard
