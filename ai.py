@@ -49,6 +49,8 @@ class AI(object):
                     print(c.y)
                     print(game_constants.window_width * (1/8))
                     print(game_constants.window_height * (1/2))
+                    print(len(hands.cards_in_opponent))
+                    print(len(hands.cards_in_hand))
             else:
                 rule_book.play(2, 1)
 
