@@ -6,6 +6,7 @@ import game_constants
 import pygame
 import card_game
 import sys
+import time
 from pygame.locals import *
 
 class AI(object):
@@ -17,13 +18,17 @@ class AI(object):
 
     def __init__(self):
         self.difficulty = easy
+        self.playing = True
 
     def play_cards(self, hands, rule_book):
         if rule_book.turn:
-            for card in hands.player1_field:
-                temp_card = find_lowest_playable_card(hands, rule_book, card)
-                if temp_card is not None:
-                    temp_card.play(-1, -1, hands, card)
+            while playing:
+                for card in hands.player1_field:
+                    temp_card = find_lowest_playable_card(hands, rule_book, card)
+                    if temp_card is not None:
+                        temp_card.play(-1, -1, hands, card)
+                time.sleep(1)
+                playing = rule_book.turn
             if len(hands.player1_field) > len(hands.player2_field): #player 1's turn
                 rule_book.play(2)    #TODO: implement AI pick up cards
             else:
