@@ -40,7 +40,9 @@ class DeckView(object):
         self.visibility = False
 
 class ButtonView(object):
-    """A view created for cards."""
+    """A view created for cards.
+
+    Attributes: model"""
     def __init__(self, model):
         self.model = model
 
@@ -48,7 +50,11 @@ class ButtonView(object):
         model = self.model
         pygame.draw.rect(surface, game_constants.c_blue, (int(model.x), int(model.y), model.width, model.height))
 
-class CardView(object):         #A view created for cards.
+class CardView(object):
+    """A view created for cards.
+
+    Attributes: model
+    """
     def __init__(self, model):
         self.model = model
 
@@ -62,8 +68,10 @@ class CardView(object):         #A view created for cards.
             screen.blit(val_label, (model.x, model.y))
             screen.blit(suit_label, (model.x, model.y + game_constants.HEIGHTCARD * 2/3))
 
+class MoveController(object):
+    """The basic controller for our game.
 
-class MoveController(object):       #The basic controller for our game.
+    Attributes: models, dragging"""
     def __init__(self, models):
         self.models = models
         self.dragging = None
@@ -115,7 +123,7 @@ class MoveController(object):       #The basic controller for our game.
 class GameRules(object):
     """The rules that drive a normal game of Durak.
 
-        Attributes: turn, trump, num_Cards_Played, beat
+        Attributes: turn, trump, num_Cards_Played, beat, x, y, width, height
     """
     def __init__(self, player_turn, deck_in, x = game_constants.window_width/16, y = game_constants.window_height/2, width = 50, height = 30):
         self.turn = player_turn      #player_turn is a boolean; True means player 1 is going False means player 2 is going.
@@ -228,7 +236,6 @@ class GameRules(object):
             print(self.turn)
         else:
             print("You can't do that yet")
-
 
 if __name__ == "__main__":
     """This is the main function that will call everything."""
