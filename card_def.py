@@ -81,6 +81,8 @@ class Card(object):
         self.discarded = True
         if self in hand.player1_field:
             hand.player1_field.remove(self)
+        if self in hand.player2_field:
+            hand.player2_field.remove(self)
 
     #def __str__(self):
     #    return("%d of %s" % self.value, self.suit)

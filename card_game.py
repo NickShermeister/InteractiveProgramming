@@ -202,6 +202,16 @@ class GameRules(object):
             card.discard(hands)
         for card in hands.player2_field:
             card.discard(hands)
+        for c in hand.cards_in_hand:    #relocate and then redisplay the screen with updated location of cards.
+            c.x = (((game_constants.window_width * (5/8))/len(hand.cards_in_hand)) * hand.cards_in_hand.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
+            c.y = game_constants.window_height * (2/3)
+        for c in hand.player1_field:
+            c.x = (game_constants.window_width * (5/48) * hand.player1_field.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
+        for c in hand.cards_in_opponent:
+            c.x = (((game_constants.window_width * (5/8))/len(hand.cards_in_opponent)) * hand.cards_in_opponent.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
+        for c in hand.player2_field:
+            c.x = (game_constants.window_width * (5/48) * hand.player2_field.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
+            c.y = game_constants.window_height * (1/2) - game_constants.HEIGHTCARD
 
     def contains_pt(self, pt):      #Returns True if a point is where the card is displayed; False otherwise.
         return (0 < (pt[0] - self.x) < self.width) and (0 < (pt[1] - self.y) < self.height)
@@ -210,28 +220,32 @@ class GameRules(object):
         if len(hand.player1_field + hand.player2_field) > 0:
             if player == 1:
                 if self.turn == True:
-                    for c in hand.player1_field + hand.player2_field:
-                        c.play(self.x, self.y, hand)
+                    '''for c in hand.player1_field + hand.player2_field:
+                        c.play(self.x, self.y, hand)'''
                     self.turn = False
                     bot.play_cards(hand, game_rules)
+                    self.beat_turn()
                     self.cleanup(hand, deck)
                     return
                 if self.turn == False:
                     for c in hand.player1_field + hand.player2_field:
                         hand.cards_in_hand.append(c)
                     self.turn = True
+                    self.lost_turn()
                     self.cleanup(hand, deck)
             if player == 2:
                 if self.turn == False:
                     for c in hand.player1_field + hand.player2_field:
                         c.play(self.x, self.y, hand)
                     self.turn = True
+                    self.beat_turn()
                     self.cleanup(hand, deck)
                     return
                 if self.turn == True:
                     for c in hand.player1_field + hand.player2_field:
                         hand.cards_in_opponent.append(c)
                     self.turn = False
+                    self.lost_turn()
                     self.cleanup(hand, deck)
             print(self.turn)
         else:
