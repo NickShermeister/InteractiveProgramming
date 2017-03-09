@@ -55,7 +55,7 @@ class CardView(object):         #A view created for cards.
     def draw(self, surface):
         model = self.model
         pygame.draw.rect(surface, game_constants.c_white, (int(model.x), int(model.y), model.width, model.height))
-        if not model.opponent:      #if the card isn't in the opponent's hand it will show its value and suit.
+        if True: #not model.opponent:      #if the card isn't in the opponent's hand it will show its value and suit.
             font = pygame.font.SysFont("monospace", 15)
             val_label = font.render(str(model.value), 1, game_constants.c_black)
             suit_label = font.render(game_constants.suit_dict[model.suit], 1, game_constants.c_black)
@@ -120,7 +120,7 @@ class GameRules(object):
     def __init__(self, player_turn, deck_in, x = game_constants.window_width/16, y = game_constants.window_height/2, width = 50, height = 30):
         self.turn = player_turn      #player_turn is a boolean; True means player 1 is going False means player 2 is going.
         self.trump = deck_in.cards_in_deck[0].suit  #int of 0-3 definining the trump suit
-        self.num_Cards_Played = 0
+        self.num_cards_played = 0
         self.beat = False
         self.x = x
         self.y = y
@@ -128,7 +128,7 @@ class GameRules(object):
         self.height = height
 
     def playable_defense(self, field_card, hand_card):      #Checks for the playability of a card on another card defensively.
-        if not field.Card.played_over:
+        if not field_card.played_over:
             self.num_cards_played += 1
             if field_card.suit == self.trump and hand_card.suit != self.trump:
                 return False
