@@ -191,9 +191,9 @@ class GameRules(object):
                     card.opponent = False
                     hands.cards_in_hand.append(card)
         for card in hands.player1_field:
-            card.discard()
+            card.discard(hands)
         for card in hands.player2_field:
-            card.discard()
+            card.discard(hands)
 
     def contains_pt(self, pt):      #Returns True if a point is where the card is displayed; False otherwise.
         return (0 < (pt[0] - self.x) < self.width) and (0 < (pt[1] - self.y) < self.height)
@@ -206,20 +206,25 @@ class GameRules(object):
                         c.play(self.x, self.y, hand)
                     self.turn = False
                     bot.play_cards(hand, game_rules)
+                    self.cleanup(hand, deck)
                     return
                 if self.turn == False:
                     for c in hand.player1_field + hand.player2_field:
                         hand.cards_in_hand.append(c)
                     self.turn = True
+                    self.cleanup(hand, deck)
             if player == 2:
                 if self.turn == False:
                     for c in hand.player1_field + hand.player2_field:
                         c.play(self.x, self.y, hand)
                     self.turn = True
+                    self.cleanup(hand, deck)
                     return
                 if self.turn == True:
                     for c in hand.player1_field + hand.player2_field:
                         hand.cards_in_opponent.append(c)
+                    self.turn = False
+                    self.cleanup(hand, deck)
             print(self.turn)
         else:
             print("You can't do that yet")
