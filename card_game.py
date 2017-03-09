@@ -214,6 +214,8 @@ class GameRules(object):
             c.x = (((game_constants.window_width * (5/8))/len(hand.cards_in_hand)) * hand.cards_in_hand.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
             c.y = game_constants.window_height * (2/3)
             views.append(CardView(c))
+            controllers.append(MoveController([c]))
+            models.append(c)
         for c in hand.player1_field:
             c.x = (game_constants.window_width * (5/48) * hand.player1_field.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
             c.y = game_constants.window_height * (2/3)
@@ -221,6 +223,8 @@ class GameRules(object):
             c.x = (((game_constants.window_width * (5/8))/len(hand.cards_in_opponent)) * hand.cards_in_opponent.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
             c.y = 75
             views.append(CardView(c))
+            controllers.append(MoveController([c]))
+            models.append(c)
         for c in hand.player2_field:
             c.x = (game_constants.window_width * (5/48) * hand.player2_field.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
             c.y = game_constants.window_height * (1/2) - game_constants.HEIGHTCARD
