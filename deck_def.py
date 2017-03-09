@@ -6,7 +6,9 @@ import random
 import pygame
 
 class Deck(object):
-    """The deck object defines a deck which both players can draw from."""
+    """The deck object defines a deck which both players can draw from.
+
+    Attributes: deck_size, card_attributes, cards_in_deck, x, y, width, height"""
 
     def __init__(self, deck_size = 52, xloc = game_constants.window_width * (7/8), yloc = game_constants.window_height * (5/6), width = game_constants.WIDTHCARD, height = game_constants.HEIGHTCARD):
         '''deck_size is number of cards in deck (36)

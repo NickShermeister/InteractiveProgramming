@@ -6,7 +6,7 @@ import game_constants
 class Card(object):
     """The basic card behind everything.
 
-    Attributes: Suit, Value, x (location), y (location), width, height, discarded, played, played_over"""
+    Attributes: Suit, Value, x (location), y (location), width, height, discarded, played, played_over, opponent"""
 
     def __init__(self, suit, value, startx = -1, starty = -1, width = game_constants.WIDTHCARD, height = game_constants.HEIGHTCARD, discarded = False, played = False):
         self.suit = suit        #number, suit

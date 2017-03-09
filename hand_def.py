@@ -8,7 +8,7 @@ class Hand(object):
 
     Has morphed into a field definition of some sort over time.
 
-    Attributes: cards_in_hand, cards_in_field, turn"""
+    Attributes: cards_in_hand, player1_field, player2_field, cards_in_opponent"""
 
     def __init__(self, hand_size, deck, cards_in_hand = [], cards_in_field = [], cards_top_field = [], cards_in_opponent = []):
         self.cards_in_hand = cards_in_hand
