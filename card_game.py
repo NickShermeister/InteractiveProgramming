@@ -72,7 +72,9 @@ class MoveController(object):       #The basic controller for our game.
                         controllers.append(MoveController([deck.cards_in_deck[len(deck.cards_in_deck)-1]]))
                         models.append(deck.cards_in_deck[len(deck.cards_in_deck)-1])
                         model.play(hand)
-                    if model != deck:
+                    if model == game_rules:
+                        game_rules.play(1)
+                    if model != deck and model != game_rules:
                         if model in hand.cards_in_hand:
                             self.dragging = model
                         else:
@@ -187,6 +189,18 @@ class GameRules(object):
 
     def contains_pt(self, pt):      #Returns True if a point is where the card is displayed; False otherwise.
         return (0 < (pt[0] - self.x) < self.width) and (0 < (pt[1] - self.y) < self.height)
+
+    def play(self, player):
+        if player == 1:
+            if self.turn == True:
+                for c in hand.player1_field + hand.player2_field:
+                    c.play(self.x, self.y, hand)
+                self.turn = False
+                return
+            if self.turn == False:
+                for c in hand.player1_field + hand.player2_field:
+                    hand.cards_in_hand.append(c)
+                self.turn = True
 
 
 if __name__ == "__main__":
