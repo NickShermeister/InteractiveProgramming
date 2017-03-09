@@ -191,16 +191,29 @@ class GameRules(object):
         return (0 < (pt[0] - self.x) < self.width) and (0 < (pt[1] - self.y) < self.height)
 
     def play(self, player):
-        if player == 1:
-            if self.turn == True:
-                for c in hand.player1_field + hand.player2_field:
-                    c.play(self.x, self.y, hand)
-                self.turn = False
-                return
-            if self.turn == False:
-                for c in hand.player1_field + hand.player2_field:
-                    hand.cards_in_hand.append(c)
-                self.turn = True
+        if len(hand.player1_field + hand.player2_field) > 0:
+            if player == 1:
+                if self.turn == True:
+                    for c in hand.player1_field + hand.player2_field:
+                        c.play(self.x, self.y, hand)
+                    self.turn = False
+                    return
+                if self.turn == False:
+                    for c in hand.player1_field + hand.player2_field:
+                        hand.cards_in_hand.append(c)
+                    self.turn = True
+            if player == 2:
+                if self.turn == False:
+                    for c in hand.player1_field + hand.player2_field:
+                        c.play(self.x, self.y, hand)
+                    self.turn = True
+                    return
+                if self.turn == True:
+                    for c in hand.player1_field + hand.player2_field:
+                        hand.cards_in_opponent.append(c)
+                    self.turn = False
+        else:
+            print("You can't do that yet")
 
 
 if __name__ == "__main__":
