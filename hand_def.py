@@ -12,14 +12,13 @@ class Hand(object):
 
     def __init__(self, hand_size, deck, cards_in_hand = [], cards_in_field = [], cards_top_field = [], cards_in_opponent = []):
         self.cards_in_hand = cards_in_hand
-        self.player1_field = cards_in_field
-        self.player2_field = cards_top_field
+        self.player1_field = cards_in_field         #The cards being played offensively in the field.
+        self.player2_field = cards_top_field        #The cards being played defensively on the field.
         self.cards_in_opponent = cards_in_opponent
         self.draw(hand_size, deck)
         deck.draw(hand_size)
         self.opponent_draw(hand_size, deck)
         deck.draw(hand_size)
-        self.turn = False  #Is set to True if it is the player's turn.
 
     def draw(self, number_of_cards, deck):
         self.number_of_cards = number_of_cards
@@ -45,6 +44,3 @@ class Hand(object):
 
     def __str__(self):
         return ', '.join(self.cards_in_hand)
-
-    def turn_change(self):
-        self.turn = not turn
