@@ -171,18 +171,6 @@ class GameRules(object):
             else:
                 return False
 
-    def play_card(self, field_card, play_card, hand):
-        play_card.play(field_card.x, field_card.x + int(game_constants.HEIGHTCARD), hand)
-
-    def beat_turn(self):                    #Resets based on a successful defense.
-        self.turn = not self.turn
-        self.num_cards_played = 0
-        self.beat = True
-
-    def lost_turn(self):                    #Resets based on a successful offense.
-        self.num_cards_played = 0
-        self.beat = False
-
     def cleanup(self, hands, deck, won):         #Cleans up the playing field after a turn.
         if won == 0:
             if self.turn:
@@ -224,7 +212,7 @@ class GameRules(object):
         for c in hand.player2_field:
             c.x = (game_constants.window_width * (5/48) * hand.player2_field.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
             c.y = game_constants.window_height * (1/2) - game_constants.HEIGHTCARD
-            print(self.turn)
+        print(self.turn)
 
     def contains_pt(self, pt):      #Returns True if a point is where the card is displayed; False otherwise.
         return (0 < (pt[0] - self.x) < self.width) and (0 < (pt[1] - self.y) < self.height)
@@ -235,7 +223,7 @@ class GameRules(object):
                 if won == 0:
                     for c in (hand.player1_field + hand.player2_field):
                         hand.cards_in_hand.append(c)
-                    self.cleanup(hand, deck, 0)
+                    #self.cleanup(hand, deck, 0)
                     bot.play_cards(hand, deck, game_rules)
                 else:
                     self.turn = False

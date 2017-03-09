@@ -35,7 +35,7 @@ class AI(object):
         else:
             temp_card = self.find_lowest_playable_card(hands, rule_book)
             if temp_card is not None:
-                rule_book.cleanup(hands, deck, 1)
+                #rule_book.cleanup(hands, deck, 1)
                 temp_card.play(-1, game_constants.window_height * (1/2), hands)
                 for c in hands.player2_field:
                     c.x = (game_constants.window_width * (5/48) * hands.player2_field.index(c)) + game_constants.window_width * (1.5/8) + game_constants.WIDTHCARD/2
