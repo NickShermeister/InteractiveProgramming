@@ -45,6 +45,8 @@ class AI(object):
                     c.y = game_constants.window_height * (1/2) - game_constants.HEIGHTCARD
                     print(c.suit)
                     print(c.value)
+                    print(c.x)
+                    print(c.y)
                     print(game_constants.window_width * (1/8))
                     print(game_constants.window_height * (1/2))
             else:
