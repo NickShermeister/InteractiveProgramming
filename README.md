@@ -1,2 +1,4 @@
 # InteractiveProgramming
-This is the base repo for the interactive programming project for Software Design, Spring 2016 at Olin College.
+In order to run Durak, you must clone the repo to you computer. After that, enter the repo and run:
+
+python3 card_game.py
