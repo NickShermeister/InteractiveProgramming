@@ -7,6 +7,8 @@ import pygame
 import sys
 from pygame.locals import *
 
+"""The python code that everything runs from."""
+
 class DeckView(object):
     """A view that shows where the deck is, and how many cards are left in it.
 
@@ -16,7 +18,8 @@ class DeckView(object):
         self.model = model
         self.visibility = True
 
-    def draw(self, surface):        #Used to describe how the deck is drawn in pygame.
+    def draw(self, surface):
+        """Used to describe how the deck is drawn in pygame."""
         model = self.model
         pygame.draw.rect(surface, game_constants.c_red, (int(model.x), int(model.y), model.width, model.height))
 
@@ -35,7 +38,8 @@ class DeckView(object):
     def delete(self):           #An alternative method to deleting the deck.
         self.visibility = False
 
-class ButtonView(object):         #A view created for cards.
+class ButtonView(object):
+    """A view created for cards."""
     def __init__(self, model):
         self.model = model
 
@@ -166,7 +170,7 @@ class GameRules(object):
         self.num_cards_played = 0
         self.beat = False
 
-    def cleanup(self, hands, deck):
+    def cleanup(self, hands, deck):         #Cleans up the playing field after a turn.
         if self.beat == False:
             if self.turn:
                 for card in hands.player1_field:
@@ -217,6 +221,7 @@ class GameRules(object):
 
 
 if __name__ == "__main__":
+    """This is the main function that will call everything."""
     pygame.init()
 
     deck = deck_def.Deck(36)

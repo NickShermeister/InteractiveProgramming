@@ -30,7 +30,7 @@ class AI(object):
                 time.sleep(1)
                 playing = rule_book.turn
             if len(hands.player1_field) > len(hands.player2_field): #player 1's turn
-                rule_book.play(2)    #TODO: implement AI pick up cards
+                rule_book.play(2)    
             else:
                 rule_book.play(1)
         else:
