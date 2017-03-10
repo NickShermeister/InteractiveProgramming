@@ -61,7 +61,7 @@ class CardView(object):
     def draw(self, surface):
         model = self.model
         pygame.draw.rect(surface, game_constants.c_white, (int(model.x), int(model.y), model.width, model.height))
-        if True: #not model.opponent:      #if the card isn't in the opponent's hand it will show its value and suit.
+        if not model.opponent:      #if the card isn't in the opponent's hand it will show its value and suit.
             font = pygame.font.SysFont("monospace", 15)
             val_label = font.render(str(model.value), 1, game_constants.c_black)
             suit_label = font.render(game_constants.suit_dict[model.suit], 1, game_constants.c_black)
